@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="parser.js"></script>        
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <!-- Popper JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+              
+        <script>
+
+            function compile(){
+                var code = $("#txtCode").val();
+                console.log(code);                
+                var res = parser.parse(code);
+                console.log(res);
+                $("#txtResult").text(JSON.stringify(res));
+            }
+        </script>
+    </head>
+
+    <bod>
+        <div class="container">
+
+            <div class="row">                
+                <div class="col-sm-10 col-offset-sm-1">
+                    <h2>C Compliler</h2>
+                    <p>Write your code and compile it...</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-10 col-offset-sm-1">
+                    <button class="btn btn-primary" onclick="compile()">Compilar</button>
+                    <a href="http://json.parser.online.fr/" target="_blank" class="btn btn-link">JSONParser</a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-5 col-offset-sm-1">
+                    <textarea id="txtCode" rows="30" cols="100" class="form-control"></textarea>
+                </div>
+            
+                <div class="col-sm-5">
+                    <textarea id="txtResult" rows="30" cols="100" class="form-control"></textarea>
+                </div>
+            </div>
+            
+        </div>
+    
+    </bod>
+</html>
