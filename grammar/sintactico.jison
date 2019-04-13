@@ -39,12 +39,23 @@ SENTS :
 
 SENT : 
     DECLARACION ptoComa {{ $$ = $1 }}
+    | ASIGNACION ptoComa {{ $$ = $1 }}
     ;
 
 DECLARACION : 
     TIPO IDS {{
         $$ = { type: 'DCL', children: [$1, $2] }
     }}
+;
+
+ASIGNACION :
+    ASIGNABLE asigna E {{
+        $$ = { type: '=', children: [$1, $3] }
+    }}
+;
+
+ASIGNABLE :
+    id {{ $$ = {type: 'id', val: yytext } }}
 ;
 
 TIPO : entero  {{
@@ -107,6 +118,9 @@ E
     | stringLit {{ 
             valor = yytext;
             $$ = {type: 'stringLit', val: valor } 
+        }}
+    | id {{             
+            $$ = {type: 'id', val: yytext } 
         }}
     ;
 

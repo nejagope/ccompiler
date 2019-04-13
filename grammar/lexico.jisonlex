@@ -86,6 +86,8 @@
 "||" return 'or'
 "!" return 'not'
 
+"="	return 'asigna'
+
 .  		return 'errorLex'
 <<EOF>> return 'eof'
 
