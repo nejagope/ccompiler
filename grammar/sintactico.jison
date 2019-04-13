@@ -23,7 +23,52 @@
 
 %%
 
-S : E eof {{ return $1 }};
+S : SENTS eof {{ return $1 }};
+
+SENTS : 
+    SENTS SENT
+        {{ 
+            var arr = $1.children; 
+            var arr2 = arr.concat($2); 
+            $1.children = arr2; 
+            $$ = $1;  
+        }}
+    | SENT
+        {{  $$ = { type: 'SENTS', children: [$1] } }}
+;
+
+SENT : 
+    DECLARACION ptoComa {{ $$ = $1 }}
+    ;
+
+DECLARACION : 
+    TIPO IDS {{
+        $$ = { type: 'DCL', children: [$1, $2] }
+    }}
+;
+
+TIPO : entero  {{
+        $$ = { type: 'TIPO', val: 'int' }
+    }}
+    | float  {{
+        $$ = { type: 'TIPO', val: 'float' }
+    }}
+    | booleano  {{
+        $$ = { type: 'TIPO', val: 'bool' }
+    }}
+;
+
+IDS : 
+    IDS coma id
+        {{ 
+            var arr = $1.children; 
+            var arr2 = arr.concat($3); 
+            $1.children = arr2; 
+            $$ = $1;  
+        }}
+    | id 
+        {{  $$ = { type: 'IDS', children: [$1] } }}
+;
 
 E
     : E mas E

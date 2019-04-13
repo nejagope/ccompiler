@@ -20,10 +20,13 @@
 
             function compile(){
                 var code = $("#txtCode").val();
-                console.log(code);                
-                var res = parser.parse(code);
-                console.log(res);
-                $("#txtResult").text(JSON.stringify(res));
+                
+                try{            
+                    var res = parser.parse(code);                    
+                    $("#txtResult").text(JSON.stringify(res));
+                }catch(ex){
+                    $("#txtResult").text(ex);
+                }                
             }
         </script>
     </head>
@@ -32,25 +35,28 @@
         <div class="container">
 
             <div class="row">                
-                <div class="col-sm-10 col-offset-sm-1">
+                <div class="col-md-12">
+                    <hr>
                     <h2>C Compliler</h2>
                     <p>Write your code and compile it...</p>
+                    <hr>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-10 col-offset-sm-1">
-                    <button class="btn btn-primary" onclick="compile()">Compilar</button>
+                <div class="col-md-12">
+                    <button class="btn btn-primary" onclick="compile()">Compile</button>
                     <a href="http://json.parser.online.fr/" target="_blank" class="btn btn-link">JSONParser</a>
+                    <hr>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-5 col-offset-sm-1">
+                <div class="col-md-6">
                     <textarea id="txtCode" rows="30" cols="100" class="form-control"></textarea>
                 </div>
             
-                <div class="col-sm-5">
+                <div class="col-md-6">
                     <textarea id="txtResult" rows="30" cols="100" class="form-control"></textarea>
                 </div>
             </div>

@@ -72,12 +72,12 @@
   }
 */
 var parser = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,3],$V1=[1,4],$V2=[1,5],$V3=[1,6],$V4=[1,7],$V5=[1,8],$V6=[1,10],$V7=[1,11],$V8=[1,12],$V9=[1,13],$Va=[1,14],$Vb=[5,6,7,8,9,10,12],$Vc=[5,6,7,12],$Vd=[5,6,7,8,9,12];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,6],$V1=[1,7],$V2=[1,8],$V3=[5,11,12,13],$V4=[8,14];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"S":3,"E":4,"eof":5,"mas":6,"menos":7,"por":8,"div":9,"pow":10,"parenA":11,"parenC":12,"boolLit":13,"intLit":14,"floatLit":15,"stringLit":16,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"eof",6:"mas",7:"menos",8:"por",9:"div",10:"pow",11:"parenA",12:"parenC",13:"boolLit",14:"intLit",15:"floatLit",16:"stringLit"},
-productions_: [0,[3,2],[4,3],[4,3],[4,3],[4,3],[4,3],[4,2],[4,3],[4,1],[4,1],[4,1],[4,1]],
+symbols_: {"error":2,"S":3,"SENTS":4,"eof":5,"SENT":6,"DECLARACION":7,"ptoComa":8,"TIPO":9,"IDS":10,"entero":11,"float":12,"booleano":13,"coma":14,"id":15,"E":16,"mas":17,"menos":18,"por":19,"div":20,"pow":21,"parenA":22,"parenC":23,"boolLit":24,"intLit":25,"floatLit":26,"stringLit":27,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"eof",8:"ptoComa",11:"entero",12:"float",13:"booleano",14:"coma",15:"id",17:"mas",18:"menos",19:"por",20:"div",21:"pow",22:"parenA",23:"parenC",24:"boolLit",25:"intLit",26:"floatLit",27:"stringLit"},
+productions_: [0,[3,2],[4,2],[4,1],[6,2],[7,2],[9,1],[9,1],[9,1],[10,3],[10,1],[16,3],[16,3],[16,3],[16,3],[16,3],[16,2],[16,3],[16,1],[16,1],[16,1],[16,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -87,57 +87,102 @@ case 1:
  return $$[$0-1] 
 break;
 case 2:
+ 
+            var arr = $$[$0-1].children; 
+            var arr2 = arr.concat($$[$0]); 
+            $$[$0-1].children = arr2; 
+            this.$ = $$[$0-1];  
+        
+break;
+case 3:
+  this.$ = { type: 'SENTS', children: [$$[$0]] } 
+break;
+case 4:
+ this.$ = $$[$0-1] 
+break;
+case 5:
+
+        this.$ = { type: 'DCL', children: [$$[$0-1], $$[$0]] }
+    
+break;
+case 6:
+
+        this.$ = { type: 'TIPO', val: 'int' }
+    
+break;
+case 7:
+
+        this.$ = { type: 'TIPO', val: 'float' }
+    
+break;
+case 8:
+
+        this.$ = { type: 'TIPO', val: 'bool' }
+    
+break;
+case 9:
+ 
+            var arr = $$[$0-2].children; 
+            var arr2 = arr.concat($$[$0]); 
+            $$[$0-2].children = arr2; 
+            this.$ = $$[$0-2];  
+        
+break;
+case 10:
+  this.$ = { type: 'IDS', children: [$$[$0]] } 
+break;
+case 11:
                        
             this.$ = {type: '+', children: [$$[$0-2], $$[$0]] } 
         
 break;
-case 3:
+case 12:
                        
             this.$ = {type: '-', children: [$$[$0-2], $$[$0]] } 
         
 break;
-case 4:
+case 13:
                        
             this.$ = {type: '*', children: [$$[$0-2], $$[$0]] } 
         
 break;
-case 5:
+case 14:
                        
             this.$ = {type: '/', children: [$$[$0-2], $$[$0]] } 
         
 break;
-case 6:
+case 15:
                        
             this.$ = {type: '^', children: [$$[$0-2], $$[$0]] } 
         
 break;
-case 7:
+case 16:
                        
             this.$ = {type: '-', children: [$$[$0]] } 
         
 break;
-case 8:
+case 17:
  this.$ = $$[$0-1]; 
 break;
-case 9:
+case 18:
  
             valor = yytext.toLowerCase() == 'true'; 
             this.$ = {type: 'boolLit', val: valor } 
         
 break;
-case 10:
+case 19:
  
             valor = parseInt(yytext);
             this.$ = {type: 'intLit', val: valor } 
         
 break;
-case 11:
+case 20:
  
-            //valor = parseFloat(yytext);
-            this.$ = {type: 'floatLit', val: parseFloat(yytext)} 
+            valor = parseFloat(yytext);
+            this.$ = {type: 'floatLit', val: valor} 
         
 break;
-case 12:
+case 21:
  
             valor = yytext;
             this.$ = {type: 'stringLit', val: valor } 
@@ -145,8 +190,8 @@ case 12:
 break;
 }
 },
-table: [{3:1,4:2,7:$V0,11:$V1,13:$V2,14:$V3,15:$V4,16:$V5},{1:[3]},{5:[1,9],6:$V6,7:$V7,8:$V8,9:$V9,10:$Va},{4:15,7:$V0,11:$V1,13:$V2,14:$V3,15:$V4,16:$V5},{4:16,7:$V0,11:$V1,13:$V2,14:$V3,15:$V4,16:$V5},o($Vb,[2,9]),o($Vb,[2,10]),o($Vb,[2,11]),o($Vb,[2,12]),{1:[2,1]},{4:17,7:$V0,11:$V1,13:$V2,14:$V3,15:$V4,16:$V5},{4:18,7:$V0,11:$V1,13:$V2,14:$V3,15:$V4,16:$V5},{4:19,7:$V0,11:$V1,13:$V2,14:$V3,15:$V4,16:$V5},{4:20,7:$V0,11:$V1,13:$V2,14:$V3,15:$V4,16:$V5},{4:21,7:$V0,11:$V1,13:$V2,14:$V3,15:$V4,16:$V5},o($Vb,[2,7]),{6:$V6,7:$V7,8:$V8,9:$V9,10:$Va,12:[1,22]},o($Vc,[2,2],{8:$V8,9:$V9,10:$Va}),o($Vc,[2,3],{8:$V8,9:$V9,10:$Va}),o($Vd,[2,4],{10:$Va}),o($Vd,[2,5],{10:$Va}),o($Vb,[2,6]),o($Vb,[2,8])],
-defaultActions: {9:[2,1]},
+table: [{3:1,4:2,6:3,7:4,9:5,11:$V0,12:$V1,13:$V2},{1:[3]},{5:[1,9],6:10,7:4,9:5,11:$V0,12:$V1,13:$V2},o($V3,[2,3]),{8:[1,11]},{10:12,15:[1,13]},{15:[2,6]},{15:[2,7]},{15:[2,8]},{1:[2,1]},o($V3,[2,2]),o($V3,[2,4]),{8:[2,5],14:[1,14]},o($V4,[2,10]),{15:[1,15]},o($V4,[2,9])],
+defaultActions: {6:[2,6],7:[2,7],8:[2,8],9:[2,1]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -642,7 +687,7 @@ break;
 case 5: 
 						this.popState(); 
 						yy_.yytext=getString(); 
-						return 16; 
+						return 27; 
 					
 break;
 case 6: appendString(yy_.yytext); 
@@ -653,19 +698,19 @@ case 8:/* ignorar comentario de línea */
 break;
 case 9:/* skip whitespace */
 break;
-case 10:return 15
+case 10:return 26
 break;
-case 11:return 14
+case 11:return 25
 break;
-case 12:return 13
+case 12:return 24
 break;
-case 13:return 13
+case 13:return 24
 break;
-case 14:return 'booleano'
+case 14:return 13
 break;
-case 15:return 'entero'
+case 15:return 11
 break;
-case 16:return 'float'
+case 16:return 12
 break;
 case 17:return 'void'
 break;
@@ -683,7 +728,7 @@ case 23:return 'continue'
 break;
 case 24:return 'return'
 break;
-case 25:return 'id'
+case 25:return 15
 break;
 case 26:return 'accesor'
 break;
@@ -691,29 +736,29 @@ case 27:return 'llaveA'
 break;
 case 28:return 'llaveC'
 break;
-case 29:return 11
+case 29:return 22
 break;
-case 30:return 12
+case 30:return 23
 break;
 case 31:return 'bracketA'
 break;
 case 32:return 'bracketC'
 break;
-case 33:return 'coma'
+case 33:return 14
 break;
-case 34:return 'ptoComa'
+case 34:return 8
 break;
 case 35:return 'pto'
 break;
-case 36:return 6
+case 36:return 17
 break;
-case 37:return 7
+case 37:return 18
 break;
-case 38:return 8
+case 38:return 19
 break;
-case 39:return 9
+case 39:return 20
 break;
-case 40:return 10
+case 40:return 21
 break;
 case 41:return 'mod'
 break;
