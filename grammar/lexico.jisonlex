@@ -43,13 +43,13 @@
 "float"	return 'float'
 "void"  return 'void'
 
-"for" 		return 'for'
-"while" 	return 'while'
-"if" 		return 'if'
-"else" 		return 'else'
-"break" 	return 'break'
-"continue" 	return 'continue'
-"return" 	return 'return'
+"for" 		return '_for'
+"while" 	return 'mientras'
+"if" 		return 'si'
+"else" 		return 'sino'
+"break" 	return '_break'
+"continue" 	return '_continue'
+"return" 	return '_return'
 
 /*-------------------------------------------- FIN PALABRAS RESERVADAS ------------------------------*/
 

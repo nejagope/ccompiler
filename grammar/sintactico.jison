@@ -38,24 +38,30 @@ SENTS :
 ;
 
 SENT : 
-    DECLARACION ptoComa {{ $$ = $1 }}
-    | ASIGNACION ptoComa {{ $$ = $1 }}
-    ;
+    DECL ptoComa {{ $$ = $1 }}
+|   ASIGNACION ptoComa {{ $$ = $1 }}
+;
 
-DECLARACION : 
-    TIPO IDS {{
+
+DECL : 
+    DECL coma DECL_SUBJECT {{ 
+        var arr = $1.children; 
+        var arr2 = arr.concat($3); 
+        $1.children = arr2; 
+        $$ = $1;  
+    }}
+|   TIPO DECL_SUBJECT {{
         $$ = { type: 'DCL', children: [$1, $2] }
-    }}
+    }} 
 ;
 
-ASIGNACION :
-    ASIGNABLE asigna E {{
-        $$ = { type: '=', children: [$1, $3] }
+DECL_SUBJECT : 
+    ID {{
+        $$ = $1;
     }}
-;
-
-ASIGNABLE :
-    id {{ $$ = {type: 'id', val: yytext } }}
+|   ASIGNACION_ID {{
+        $$ = $1;
+    }} 
 ;
 
 TIPO : entero  {{
@@ -69,17 +75,19 @@ TIPO : entero  {{
     }}
 ;
 
-IDS : 
-    IDS coma id
-        {{ 
-            var arr = $1.children; 
-            var arr2 = arr.concat($3); 
-            $1.children = arr2; 
-            $$ = $1;  
-        }}
-    | id 
-        {{  $$ = { type: 'IDS', children: [$1] } }}
+ASIGNACION_ID :
+    ID asigna E {{
+        $$ = { type: '=', children: [$1, $3] }
+    }}
 ;
+
+ASIGNACION :
+    ASIGNACION_ID {{
+        $$ = $1;
+    }} 
+;
+
+ID : id {{  $$ = { type: 'ID', val: $1 } }} ;
 
 E
     : E mas E
@@ -119,53 +127,7 @@ E
             valor = yytext;
             $$ = {type: 'stringLit', val: valor } 
         }}
-    | id {{             
-            $$ = {type: 'id', val: yytext } 
+    | ID {{             
+            $$ = $1; 
         }}
     ;
-
-
-/*
-COLTYPE : increments
-            {{$$ = {type: 'coltype', val: 'increments' } }}
-        | cadena
-            {{$$ = {type: 'coltype', val: 'string' } }}
-        | mediumText
-            {{$$ = {type: 'coltype', val: 'mediumText' } }}
-        | entero
-            {{$$ = {type: 'coltype', val: 'integer' } }}
-        | booleano
-            {{$$ = {type: 'coltype', val: 'boolean' } }}
-        | date
-            {{$$ = {type: 'coltype', val: 'date' } }}
-        | datetime
-            {{$$ = {type: 'coltype', val: 'datetime' } }}
-        | timestamp
-            {{$$ = {type: 'coltype', val: 'timestamp' } }}
-        | float
-            {{$$ = {type: 'coltype', val: 'float' } }}
-        | decimal
-            {{$$ = {type: 'coltype', val: 'decimal' } }}
-        | timestamps
-            {{$$ = {type: 'coltype', val: 'timestamps' } }}
-        | remembertoken
-            {{$$ = {type: 'coltype', val: 'remembertoken' } }}
-        | softdeletes
-            {{$$ = {type: 'coltype', val: 'softdeletes' } }}        
-        ;
-
-EXPS : EXPS coma E 
-            {{ var arr = $1.children; var arr2 = arr.concat($3); $1.children = arr2; $$ = $1;  }}
-    | E {{  $$ = { type: 'expressions', children: [$1] } }}
-    ; 
-
-E : booleanoLit   {{ $$ = yytext.toLowerCase() == 'true' }}
-    | enteroLit     {{ $$ = parseInt(yytext) }}
-    | decimalLit    {{ $$ = parseFloat(yytext) }}
-    | CADENA     {{ $$ = $1 }}    
-    ;
-
-
-CADENA : cadenaLit {{$$ = yytext }};
-
-*/
