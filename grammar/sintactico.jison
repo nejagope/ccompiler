@@ -53,6 +53,13 @@ SENT :
     DECL ptoComa {{ $$ = $1 }}
 |   ASIGNACION ptoComa {{ $$ = $1 }}
 |   IF {{ $$ = $1 }}
+|   WHILE {{ $$ = $1 }}
+;
+
+WHILE :
+    mientras parenA E parenC BLOQUE_SENTS {{
+        $$ = { type:'while', children: [$3, $5] }
+    }}
 ;
 
 IF: 
