@@ -19,11 +19,23 @@
 %left pow
 %left UMINUS
 
+%left THEN
+%left sino
+
 %start S
 
 %%
 
 S : SENTS eof {{ return $1 }};
+
+BLOQUE_SENTS :
+    llaveA SENTS llaveC{{
+        $$ = $2;
+    }}
+|   SENT {{  
+        $$ = { type: 'SENTS', children: [$1] } 
+    }}
+;
 
 SENTS : 
     SENTS SENT
@@ -40,8 +52,18 @@ SENTS :
 SENT : 
     DECL ptoComa {{ $$ = $1 }}
 |   ASIGNACION ptoComa {{ $$ = $1 }}
+|   IF {{ $$ = $1 }}
 ;
 
+IF: 
+    si parenA E parenC BLOQUE_SENTS %prec THEN {{
+        $$ = { type:'if', children: [$3, $5] }
+    }}
+|   si parenA E parenC BLOQUE_SENTS sino BLOQUE_SENTS {{
+        $$ = { type:'if', children: [$3, $5, $7] }
+    }}
+    
+;
 
 DECL : 
     DECL coma DECL_SUBJECT {{ 
