@@ -29,11 +29,20 @@
 S : SENTS eof {{ return $1 }};
 
 BLOQUE_SENTS :
+    BLOQUE_DELIMITADO {{
+        $$ = $1;
+    }}
+|   SENT {{  
+        $$ = { type: 'sents', children: [$1] } 
+    }}
+;
+
+BLOQUE_DELIMITADO :
     llaveA SENTS llaveC{{
         $$ = $2;
     }}
-|   SENT {{  
-        $$ = { type: 'SENTS', children: [$1] } 
+|   llaveA llaveC {{  
+        $$ = { type: 'sents' } 
     }}
 ;
 
@@ -46,7 +55,7 @@ SENTS :
             $$ = $1;  
         }}
     | SENT
-        {{  $$ = { type: 'SENTS', children: [$1] } }}
+        {{  $$ = { type: 'sents', children: [$1] } }}
 ;
 
 SENT : 
@@ -54,20 +63,53 @@ SENT :
 |   ASIGNACION ptoComa {{ $$ = $1 }}
 |   IF {{ $$ = $1 }}
 |   WHILE {{ $$ = $1 }}
+|   METODO {{ $$ = $1 }}
 ;
+
+METODO:
+    TIPO ID parenA PARAMS parenC BLOQUE_DELIMITADO {{  
+        $$ = { type: 'metodo', return_type: $1, id: $2, params: $4, body:$6 } 
+    }}
+|   TIPO ID parenA parenC BLOQUE_DELIMITADO {{  
+        $$ = { type: 'metodo', return_type: $1, id: $2, body:$5 }        
+    }}
+|   void ID parenA PARAMS parenC BLOQUE_DELIMITADO {{  
+        $$ = { type: 'metodo', id: $2, params: $4, body:$6 } 
+    }}
+|   void ID parenA parenC BLOQUE_DELIMITADO {{  
+        $$ = { type: 'metodo', id: $2, body:$5 }        
+    }}}
+;
+
+PARAMS: 
+    PARAMS coma PARAM {{ 
+        var arr = $1.children; 
+        var arr2 = arr.concat($3); 
+        $1.children = arr2; 
+        $$ = $1;  
+    }}
+|   PARAM {{
+        $$ = { type: 'params', children: [$1] }
+    }} 
+;
+
+PARAM:
+    TIPO ID {{  $$ = { type: 'param', data_type: $1, id: $2 } }}
+;
+
 
 WHILE :
     mientras parenA E parenC BLOQUE_SENTS {{
-        $$ = { type:'while', children: [$3, $5] }
+        $$ = { type:'while', cond: $3, body: $5 }
     }}
 ;
 
 IF: 
     si parenA E parenC BLOQUE_SENTS %prec THEN {{
-        $$ = { type:'if', children: [$3, $5] }
+        $$ = { type:'if', cond: $3, body: $5 }
     }}
 |   si parenA E parenC BLOQUE_SENTS sino BLOQUE_SENTS {{
-        $$ = { type:'if', children: [$3, $5, $7] }
+        $$ = { type:'if', cond: $3, body: $5, body_else: $7 }
     }}
     
 ;
@@ -80,7 +122,7 @@ DECL :
         $$ = $1;  
     }}
 |   TIPO DECL_SUBJECT {{
-        $$ = { type: 'DCL', children: [$1, $2] }
+        $$ = { type: 'dcl', data_type: $1 children: [$2] }
     }} 
 ;
 
@@ -94,13 +136,13 @@ DECL_SUBJECT :
 ;
 
 TIPO : entero  {{
-        $$ = { type: 'TIPO', val: 'int' }
+        $$ = { type: 'tipo', val: 'int' }
     }}
     | float  {{
-        $$ = { type: 'TIPO', val: 'float' }
+        $$ = { type: 'tipo', val: 'float' }
     }}
     | booleano  {{
-        $$ = { type: 'TIPO', val: 'bool' }
+        $$ = { type: 'tipo', val: 'bool' }
     }}
 ;
 
@@ -116,7 +158,7 @@ ASIGNACION :
     }} 
 ;
 
-ID : id {{  $$ = { type: 'ID', val: $1 } }} ;
+ID : id {{  $$ = { type: 'id', val: $1 } }} ;
 
 E
     : E mas E

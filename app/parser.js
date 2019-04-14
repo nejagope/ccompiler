@@ -72,12 +72,12 @@
   }
 */
 var parser = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,9],$V1=[1,10],$V2=[1,11],$V3=[1,12],$V4=[1,14],$V5=[5,8,14,24,25,26,28],$V6=[5,8,14,18,24,25,26,28],$V7=[1,24],$V8=[11,19],$V9=[1,28],$Va=[1,27],$Vb=[1,29],$Vc=[1,30],$Vd=[1,31],$Ve=[1,32],$Vf=[1,36],$Vg=[1,37],$Vh=[1,38],$Vi=[1,39],$Vj=[1,40],$Vk=[11,17,19,29,30,31,32,33],$Vl=[1,44],$Vm=[11,17,19,29,30],$Vn=[11,17,19,29,30,31,32];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,13],$V1=[1,12],$V2=[1,11],$V3=[1,14],$V4=[1,15],$V5=[1,16],$V6=[1,18],$V7=[5,10,22,25,27,31,32,33,35],$V8=[5,10,22,25,27,28,31,32,33,35],$V9=[1,30],$Va=[12,23],$Vb=[2,25],$Vc=[1,36],$Vd=[1,35],$Ve=[1,37],$Vf=[1,38],$Vg=[1,39],$Vh=[1,40],$Vi=[1,50],$Vj=[1,51],$Vk=[1,52],$Vl=[1,53],$Vm=[1,54],$Vn=[12,21,23,36,37,38,39,40],$Vo=[1,61],$Vp=[1,63],$Vq=[21,23],$Vr=[12,21,23,36,37],$Vs=[12,21,23,36,37,38,39];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"S":3,"SENTS":4,"eof":5,"BLOQUE_SENTS":6,"llaveA":7,"llaveC":8,"SENT":9,"DECL":10,"ptoComa":11,"ASIGNACION":12,"IF":13,"si":14,"parenA":15,"E":16,"parenC":17,"sino":18,"coma":19,"DECL_SUBJECT":20,"TIPO":21,"ID":22,"ASIGNACION_ID":23,"entero":24,"float":25,"booleano":26,"asigna":27,"id":28,"mas":29,"menos":30,"por":31,"div":32,"pow":33,"boolLit":34,"intLit":35,"floatLit":36,"stringLit":37,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"eof",7:"llaveA",8:"llaveC",11:"ptoComa",14:"si",15:"parenA",17:"parenC",18:"sino",19:"coma",24:"entero",25:"float",26:"booleano",27:"asigna",28:"id",29:"mas",30:"menos",31:"por",32:"div",33:"pow",34:"boolLit",35:"intLit",36:"floatLit",37:"stringLit"},
-productions_: [0,[3,2],[6,3],[6,1],[4,2],[4,1],[9,2],[9,2],[9,1],[13,5],[13,7],[10,3],[10,2],[20,1],[20,1],[21,1],[21,1],[21,1],[23,3],[12,1],[22,1],[16,3],[16,3],[16,3],[16,3],[16,3],[16,2],[16,3],[16,1],[16,1],[16,1],[16,1],[16,1]],
+symbols_: {"error":2,"S":3,"SENTS":4,"eof":5,"BLOQUE_SENTS":6,"BLOQUE_DELIMITADO":7,"SENT":8,"llaveA":9,"llaveC":10,"DECL":11,"ptoComa":12,"ASIGNACION":13,"IF":14,"WHILE":15,"METODO":16,"TIPO":17,"ID":18,"parenA":19,"PARAMS":20,"parenC":21,"void":22,"coma":23,"PARAM":24,"mientras":25,"E":26,"si":27,"sino":28,"DECL_SUBJECT":29,"ASIGNACION_ID":30,"entero":31,"float":32,"booleano":33,"asigna":34,"id":35,"mas":36,"menos":37,"por":38,"div":39,"pow":40,"boolLit":41,"intLit":42,"floatLit":43,"stringLit":44,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"eof",9:"llaveA",10:"llaveC",12:"ptoComa",19:"parenA",21:"parenC",22:"void",23:"coma",25:"mientras",27:"si",28:"sino",31:"entero",32:"float",33:"booleano",34:"asigna",35:"id",36:"mas",37:"menos",38:"por",39:"div",40:"pow",41:"boolLit",42:"intLit",43:"floatLit",44:"stringLit"},
+productions_: [0,[3,2],[6,1],[6,1],[7,3],[7,2],[4,2],[4,1],[8,2],[8,2],[8,1],[8,1],[8,1],[16,6],[16,5],[16,6],[16,5],[20,3],[20,1],[24,2],[15,5],[14,5],[14,7],[11,3],[11,2],[29,1],[29,1],[17,1],[17,1],[17,1],[30,3],[13,1],[18,1],[26,3],[26,3],[26,3],[26,3],[26,3],[26,2],[26,3],[26,1],[26,1],[26,1],[26,1],[26,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -86,17 +86,27 @@ switch (yystate) {
 case 1:
  return $$[$0-1] 
 break;
-case 2:
+case 2: case 25: case 26: case 31:
 
-        this.$ = $$[$0-1];
+        this.$ = $$[$0];
     
 break;
 case 3:
   
-        this.$ = { type: 'SENTS', children: [$$[$0]] } 
+        this.$ = { type: 'sents', children: [$$[$0]] } 
     
 break;
 case 4:
+
+        this.$ = $$[$0-1];
+    
+break;
+case 5:
+  
+        this.$ = { type: 'sents' } 
+    
+break;
+case 6:
  
             var arr = $$[$0-1].children; 
             var arr2 = arr.concat($$[$0]); 
@@ -104,26 +114,36 @@ case 4:
             this.$ = $$[$0-1];  
         
 break;
-case 5:
-  this.$ = { type: 'SENTS', children: [$$[$0]] } 
+case 7:
+  this.$ = { type: 'sents', children: [$$[$0]] } 
 break;
-case 6: case 7:
+case 8: case 9:
  this.$ = $$[$0-1] 
 break;
-case 8:
+case 10: case 11: case 12:
  this.$ = $$[$0] 
 break;
-case 9:
-
-        this.$ = { type:'if', children: [$$[$0-2], $$[$0]] }
+case 13:
+  
+        this.$ = { type: 'metodo', return_type: $$[$0-5], id: $$[$0-4], params: $$[$0-2], body:$$[$0] } 
     
 break;
-case 10:
-
-        this.$ = { type:'if', children: [$$[$0-4], $$[$0-2], $$[$0]] }
+case 14:
+  
+        this.$ = { type: 'metodo', return_type: $$[$0-4], id: $$[$0-3], body:$$[$0] }        
     
 break;
-case 11:
+case 15:
+  
+        this.$ = { type: 'metodo', id: $$[$0-4], params: $$[$0-2], body:$$[$0] } 
+    
+break;
+case 16:
+  
+        this.$ = { type: 'metodo', id: $$[$0-3], body:$$[$0] }        
+    
+break;
+case 17: case 23:
  
         var arr = $$[$0-2].children; 
         var arr2 = arr.concat($$[$0]); 
@@ -131,105 +151,123 @@ case 11:
         this.$ = $$[$0-2];  
     
 break;
-case 12:
-
-        this.$ = { type: 'DCL', children: [$$[$0-1], $$[$0]] }
-    
-break;
-case 13: case 14: case 19:
-
-        this.$ = $$[$0];
-    
-break;
-case 15:
-
-        this.$ = { type: 'TIPO', val: 'int' }
-    
-break;
-case 16:
-
-        this.$ = { type: 'TIPO', val: 'float' }
-    
-break;
-case 17:
-
-        this.$ = { type: 'TIPO', val: 'bool' }
-    
-break;
 case 18:
+
+        this.$ = { type: 'params', children: [$$[$0]] }
+    
+break;
+case 19:
+  this.$ = { type: 'param', data_type: $$[$0-1], id: $$[$0] } 
+break;
+case 20:
+
+        this.$ = { type:'while', cond: $$[$0-2], body: $$[$0] }
+    
+break;
+case 21:
+
+        this.$ = { type:'if', cond: $$[$0-2], body: $$[$0] }
+    
+break;
+case 22:
+
+        this.$ = { type:'if', cond: $$[$0-4], body: $$[$0-2], body_else: $$[$0] }
+    
+break;
+case 24:
+
+        this.$ = { type: 'dcl', data_type: $$[$0-1] children: [$$[$0]] }
+    
+break;
+case 27:
+
+        this.$ = { type: 'tipo', val: 'int' }
+    
+break;
+case 28:
+
+        this.$ = { type: 'tipo', val: 'float' }
+    
+break;
+case 29:
+
+        this.$ = { type: 'tipo', val: 'bool' }
+    
+break;
+case 30:
 
         this.$ = { type: '=', children: [$$[$0-2], $$[$0]] }
     
 break;
-case 20:
-  this.$ = { type: 'ID', val: $$[$0] } 
+case 32:
+  this.$ = { type: 'id', val: $$[$0] } 
 break;
-case 21:
+case 33:
                        
             this.$ = {type: '+', children: [$$[$0-2], $$[$0]] } 
         
 break;
-case 22:
+case 34:
                        
             this.$ = {type: '-', children: [$$[$0-2], $$[$0]] } 
         
 break;
-case 23:
+case 35:
                        
             this.$ = {type: '*', children: [$$[$0-2], $$[$0]] } 
         
 break;
-case 24:
+case 36:
                        
             this.$ = {type: '/', children: [$$[$0-2], $$[$0]] } 
         
 break;
-case 25:
+case 37:
                        
             this.$ = {type: '^', children: [$$[$0-2], $$[$0]] } 
         
 break;
-case 26:
+case 38:
                        
             this.$ = {type: '-', children: [$$[$0]] } 
         
 break;
-case 27:
+case 39:
  this.$ = $$[$0-1]; 
 break;
-case 28:
+case 40:
  
             valor = yytext.toLowerCase() == 'true'; 
             this.$ = {type: 'boolLit', val: valor } 
         
 break;
-case 29:
+case 41:
  
             valor = parseInt(yytext);
             this.$ = {type: 'intLit', val: valor } 
         
 break;
-case 30:
+case 42:
  
             valor = parseFloat(yytext);
             this.$ = {type: 'floatLit', val: valor} 
         
 break;
-case 31:
+case 43:
  
             valor = yytext;
             this.$ = {type: 'stringLit', val: valor } 
         
 break;
-case 32:
+case 44:
              
             this.$ = $$[$0]; 
         
 break;
 }
 },
-table: [{3:1,4:2,9:3,10:4,12:5,13:6,14:$V0,21:7,22:13,23:8,24:$V1,25:$V2,26:$V3,28:$V4},{1:[3]},{5:[1,15],9:16,10:4,12:5,13:6,14:$V0,21:7,22:13,23:8,24:$V1,25:$V2,26:$V3,28:$V4},o($V5,[2,5]),{11:[1,17],19:[1,18]},{11:[1,19]},o($V6,[2,8]),{20:20,22:21,23:22,28:$V4},{11:[2,19]},{15:[1,23]},{28:[2,15]},{28:[2,16]},{28:[2,17]},{27:$V7},o([11,17,19,27,29,30,31,32,33],[2,20]),{1:[2,1]},o($V5,[2,4]),o($V6,[2,6]),{20:25,22:21,23:22,28:$V4},o($V6,[2,7]),o($V8,[2,12]),o($V8,[2,13],{27:$V7}),o($V8,[2,14]),{15:$V9,16:26,22:33,28:$V4,30:$Va,34:$Vb,35:$Vc,36:$Vd,37:$Ve},{15:$V9,16:34,22:33,28:$V4,30:$Va,34:$Vb,35:$Vc,36:$Vd,37:$Ve},o($V8,[2,11]),{17:[1,35],29:$Vf,30:$Vg,31:$Vh,32:$Vi,33:$Vj},{15:$V9,16:41,22:33,28:$V4,30:$Va,34:$Vb,35:$Vc,36:$Vd,37:$Ve},{15:$V9,16:42,22:33,28:$V4,30:$Va,34:$Vb,35:$Vc,36:$Vd,37:$Ve},o($Vk,[2,28]),o($Vk,[2,29]),o($Vk,[2,30]),o($Vk,[2,31]),o($Vk,[2,32]),o($V8,[2,18],{29:$Vf,30:$Vg,31:$Vh,32:$Vi,33:$Vj}),{6:43,7:$Vl,9:45,10:4,12:5,13:6,14:$V0,21:7,22:13,23:8,24:$V1,25:$V2,26:$V3,28:$V4},{15:$V9,16:46,22:33,28:$V4,30:$Va,34:$Vb,35:$Vc,36:$Vd,37:$Ve},{15:$V9,16:47,22:33,28:$V4,30:$Va,34:$Vb,35:$Vc,36:$Vd,37:$Ve},{15:$V9,16:48,22:33,28:$V4,30:$Va,34:$Vb,35:$Vc,36:$Vd,37:$Ve},{15:$V9,16:49,22:33,28:$V4,30:$Va,34:$Vb,35:$Vc,36:$Vd,37:$Ve},{15:$V9,16:50,22:33,28:$V4,30:$Va,34:$Vb,35:$Vc,36:$Vd,37:$Ve},o($Vk,[2,26]),{17:[1,51],29:$Vf,30:$Vg,31:$Vh,32:$Vi,33:$Vj},o($V5,[2,9],{18:[1,52]}),{4:53,9:3,10:4,12:5,13:6,14:$V0,21:7,22:13,23:8,24:$V1,25:$V2,26:$V3,28:$V4},o($V6,[2,3]),o($Vm,[2,21],{31:$Vh,32:$Vi,33:$Vj}),o($Vm,[2,22],{31:$Vh,32:$Vi,33:$Vj}),o($Vn,[2,23],{33:$Vj}),o($Vn,[2,24],{33:$Vj}),o($Vk,[2,25]),o($Vk,[2,27]),{6:54,7:$Vl,9:45,10:4,12:5,13:6,14:$V0,21:7,22:13,23:8,24:$V1,25:$V2,26:$V3,28:$V4},{8:[1,55],9:16,10:4,12:5,13:6,14:$V0,21:7,22:13,23:8,24:$V1,25:$V2,26:$V3,28:$V4},o($V6,[2,10]),o($V6,[2,2])],
-defaultActions: {8:[2,19],10:[2,15],11:[2,16],12:[2,17],15:[2,1]},
+table: [{3:1,4:2,8:3,11:4,13:5,14:6,15:7,16:8,17:9,18:17,22:$V0,25:$V1,27:$V2,30:10,31:$V3,32:$V4,33:$V5,35:$V6},{1:[3]},{5:[1,19],8:20,11:4,13:5,14:6,15:7,16:8,17:9,18:17,22:$V0,25:$V1,27:$V2,30:10,31:$V3,32:$V4,33:$V5,35:$V6},o($V7,[2,7]),{12:[1,21],23:[1,22]},{12:[1,23]},o($V8,[2,10]),o($V8,[2,11]),o($V8,[2,12]),{18:25,29:24,30:26,35:$V6},{12:[2,31]},{19:[1,27]},{19:[1,28]},{18:29,35:$V6},{35:[2,27]},{35:[2,28]},{35:[2,29]},{34:$V9},o([12,19,21,23,34,36,37,38,39,40],[2,32]),{1:[2,1]},o($V7,[2,6]),o($V8,[2,8]),{18:32,29:31,30:26,35:$V6},o($V8,[2,9]),o($Va,[2,24]),o($Va,$Vb,{19:[1,33],34:$V9}),o($Va,[2,26]),{18:41,19:$Vc,26:34,35:$V6,37:$Vd,41:$Ve,42:$Vf,43:$Vg,44:$Vh},{18:41,19:$Vc,26:42,35:$V6,37:$Vd,41:$Ve,42:$Vf,43:$Vg,44:$Vh},{19:[1,43]},{18:41,19:$Vc,26:44,35:$V6,37:$Vd,41:$Ve,42:$Vf,43:$Vg,44:$Vh},o($Va,[2,23]),o($Va,$Vb,{34:$V9}),{17:48,20:45,21:[1,46],24:47,31:$V3,32:$V4,33:$V5},{21:[1,49],36:$Vi,37:$Vj,38:$Vk,39:$Vl,40:$Vm},{18:41,19:$Vc,26:55,35:$V6,37:$Vd,41:$Ve,42:$Vf,43:$Vg,44:$Vh},{18:41,19:$Vc,26:56,35:$V6,37:$Vd,41:$Ve,42:$Vf,43:$Vg,44:$Vh},o($Vn,[2,40]),o($Vn,[2,41]),o($Vn,[2,42]),o($Vn,[2,43]),o($Vn,[2,44]),{21:[1,57],36:$Vi,37:$Vj,38:$Vk,39:$Vl,40:$Vm},{17:48,20:58,21:[1,59],24:47,31:$V3,32:$V4,33:$V5},o($Va,[2,30],{36:$Vi,37:$Vj,38:$Vk,39:$Vl,40:$Vm}),{21:[1,60],23:$Vo},{7:62,9:$Vp},o($Vq,[2,18]),{18:64,35:$V6},{6:65,7:66,8:67,9:$Vp,11:4,13:5,14:6,15:7,16:8,17:9,18:17,22:$V0,25:$V1,27:$V2,30:10,31:$V3,32:$V4,33:$V5,35:$V6},{18:41,19:$Vc,26:68,35:$V6,37:$Vd,41:$Ve,42:$Vf,43:$Vg,44:$Vh},{18:41,19:$Vc,26:69,35:$V6,37:$Vd,41:$Ve,42:$Vf,43:$Vg,44:$Vh},{18:41,19:$Vc,26:70,35:$V6,37:$Vd,41:$Ve,42:$Vf,43:$Vg,44:$Vh},{18:41,19:$Vc,26:71,35:$V6,37:$Vd,41:$Ve,42:$Vf,43:$Vg,44:$Vh},{18:41,19:$Vc,26:72,35:$V6,37:$Vd,41:$Ve,42:$Vf,43:$Vg,44:$Vh},o($Vn,[2,38]),{21:[1,73],36:$Vi,37:$Vj,38:$Vk,39:$Vl,40:$Vm},{6:74,7:66,8:67,9:$Vp,11:4,13:5,14:6,15:7,16:8,17:9,18:17,22:$V0,25:$V1,27:$V2,30:10,31:$V3,32:$V4,33:$V5,35:$V6},{21:[1,75],23:$Vo},{7:76,9:$Vp},{7:77,9:$Vp},{17:48,24:78,31:$V3,32:$V4,33:$V5},o($V8,[2,14]),{4:79,8:3,10:[1,80],11:4,13:5,14:6,15:7,16:8,17:9,18:17,22:$V0,25:$V1,27:$V2,30:10,31:$V3,32:$V4,33:$V5,35:$V6},o($Vq,[2,19]),o($V7,[2,21],{28:[1,81]}),o($V8,[2,2]),o($V8,[2,3]),o($Vr,[2,33],{38:$Vk,39:$Vl,40:$Vm}),o($Vr,[2,34],{38:$Vk,39:$Vl,40:$Vm}),o($Vs,[2,35],{40:$Vm}),o($Vs,[2,36],{40:$Vm}),o($Vn,[2,37]),o($Vn,[2,39]),o($V8,[2,20]),{7:82,9:$Vp},o($V8,[2,16]),o($V8,[2,13]),o($Vq,[2,17]),{8:20,10:[1,83],11:4,13:5,14:6,15:7,16:8,17:9,18:17,22:$V0,25:$V1,27:$V2,30:10,31:$V3,32:$V4,33:$V5,35:$V6},o($V8,[2,5]),{6:84,7:66,8:67,9:$Vp,11:4,13:5,14:6,15:7,16:8,17:9,18:17,22:$V0,25:$V1,27:$V2,30:10,31:$V3,32:$V4,33:$V5,35:$V6},o($V8,[2,15]),o($V8,[2,4]),o($V8,[2,22])],
+defaultActions: {10:[2,31],14:[2,27],15:[2,28],16:[2,29],19:[2,1]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -725,7 +763,7 @@ break;
 case 5: 
 						this.popState(); 
 						yy_.yytext=getString(); 
-						return 37; 
+						return 44; 
 					
 break;
 case 6: appendString(yy_.yytext); 
@@ -736,29 +774,29 @@ case 8:/* ignorar comentario de línea */
 break;
 case 9:/* skip whitespace */
 break;
-case 10:return 36
+case 10:return 43
 break;
-case 11:return 35
+case 11:return 42
 break;
-case 12:return 34
+case 12:return 41
 break;
-case 13:return 34
+case 13:return 41
 break;
-case 14:return 26
+case 14:return 33
 break;
-case 15:return 24
+case 15:return 31
 break;
-case 16:return 25
+case 16:return 32
 break;
-case 17:return 'void'
+case 17:return 22
 break;
 case 18:return '_for'
 break;
-case 19:return 'mientras'
+case 19:return 25
 break;
-case 20:return 14
+case 20:return 27
 break;
-case 21:return 18
+case 21:return 28
 break;
 case 22:return '_break'
 break;
@@ -766,37 +804,37 @@ case 23:return '_continue'
 break;
 case 24:return '_return'
 break;
-case 25:return 28
+case 25:return 35
 break;
 case 26:return 'accesor'
 break;
-case 27:return 7
+case 27:return 9
 break;
-case 28:return 8
+case 28:return 10
 break;
-case 29:return 15
+case 29:return 19
 break;
-case 30:return 17
+case 30:return 21
 break;
 case 31:return 'bracketA'
 break;
 case 32:return 'bracketC'
 break;
-case 33:return 19
+case 33:return 23
 break;
-case 34:return 11
+case 34:return 12
 break;
 case 35:return 'pto'
 break;
-case 36:return 29
+case 36:return 36
 break;
-case 37:return 30
+case 37:return 37
 break;
-case 38:return 31
+case 38:return 38
 break;
-case 39:return 32
+case 39:return 39
 break;
-case 40:return 33
+case 40:return 40
 break;
 case 41:return 'mod'
 break;
@@ -818,7 +856,7 @@ case 49:return 'or'
 break;
 case 50:return 'not'
 break;
-case 51:return 27
+case 51:return 34
 break;
 case 52:return 'errorLex'
 break;
