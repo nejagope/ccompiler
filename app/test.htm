@@ -24,7 +24,20 @@
                 try{            
                     var res = parser.parse(code);                    
                     $("#txtResult").text(JSON.stringify(res.ast)); 
-                    $("#txtErrors").text(JSON.stringify(res.errs));
+                    $("#txtTS").text(JSON.stringify(res.ts));
+                    $("#txtErrs").text(JSON.stringify(res.errs));
+                    
+                    if (res.errs.length > 0){                        
+                        $("#alertFail").fadeTo(2000, 500).slideUp(1000, function(){
+                            $("#alertFail").slideUp(500);
+                        });
+                        $("#alertSuccess").hide();
+                    }else{
+                        $("#alertSuccess").fadeTo(2000, 500).slideUp(1000, function(){
+                            $("#alertSuccess").slideUp(500);
+                        });
+                        $("#alertFail").hide();
+                    }
                 }catch(ex){
                     $("#txtResult").text(ex);
                 }                
@@ -47,8 +60,28 @@
             <div class="row">
                 <div class="col-md-12">
                     <button class="btn btn-primary" onclick="compile()">Compile</button>
-                    <a href="http://json.parser.online.fr/" target="_blank" class="btn btn-link">JSONParser</a>
+                    <a href="http://json.parser.online.fr/" target="_blank" class="btn btn-link">JSON Parser</a>
                     <hr>
+
+                    <div class="alert alert-success alert-dismissible" role="alert" id="alertSuccess"  data-dismiss="alert" aria-hidden="true">                        
+                        <h6 class="alert-heading">
+                            Success!
+                        </h6>
+                        <p>Compiled without errors</p>                           
+                    </div>
+
+                    <div class="alert alert-danger alert-dismissible" role="alert" id="alertFail"  data-dismiss="alert" aria-hidden="true">                        
+                        <h6 class="alert-heading">
+                            Failed!
+                        </h6>
+                        <p>Compiled with <a href="#txtErrs" class="alert-link">errors</a></p>                           
+                    </div>
+
+                    <script>
+                            $("#alertSuccess").hide();
+                            $("#alertFail").hide();
+                    </script>
+
                 </div>
             </div>
 
@@ -64,7 +97,15 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <textarea id="txtErrors" rows="10" cols="200" class="form-control"></textarea>
+                    <h3>Symbols</h3>
+                    <textarea id="txtTS" rows="10" cols="200" class="form-control"></textarea>
+                </div>            
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Errors</h3>
+                    <textarea id="txtErrs" rows="10" cols="200" class="form-control"></textarea>
                 </div>            
             </div>
             
