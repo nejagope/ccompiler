@@ -96,10 +96,10 @@ SENT :
 
 RETURN :
     retornar E {{
-        $$ = { type: 'return', children: [$2] }
+        $$ = { type: 'return', size: 1, children: [$2] }
     }}
 |   retornar {{
-        $$ = { type: 'return' }
+        $$ = { type: 'return', size: 0 }
     }}
 ;
 
