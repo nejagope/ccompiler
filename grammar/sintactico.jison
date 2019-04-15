@@ -30,19 +30,19 @@ S : SENTS eof {{ return $1 }};
 
 BLOQUE_SENTS :
     BLOQUE_DELIMITADO {{
-        $$ = $1;
+        $$ = $1;        
     }}
 |   SENT {{  
-        $$ = { type: 'sents', children: [$1] } 
+        $$ = { type: 'sents', size: $1.size, children: [$1] } 
     }}
 ;
 
 BLOQUE_DELIMITADO :
     llaveA SENTS llaveC{{
-        $$ = $2;
+        $$ = $2;        
     }}
 |   llaveA llaveC {{  
-        $$ = { type: 'sents' } 
+        $$ = { type: 'sents', size: 0 } 
     }}
 ;
 
@@ -53,14 +53,15 @@ SENTS :
             var arr2 = arr.concat($2); 
             $1.children = arr2; 
             $$ = $1;  
+            $$.size += $2.size;
         }}
     | SENT
-        {{  $$ = { type: 'sents', children: [$1] } }}
+        {{  $$ = { type: 'sents', size: $1.size, children: [$1] } }}
 ;
 
 SENT : 
     DECL ptoComa {{ $$ = $1 }}
-|   ASIGNACION ptoComa {{ $$ = $1 }}
+|   ASIGNACION ptoComa {{ $$ = $1}}
 |   IF {{ $$ = $1 }}
 |   WHILE {{ $$ = $1 }}
 |   METODO {{ $$ = $1 }}
@@ -68,16 +69,16 @@ SENT :
 
 METODO:
     TIPO ID parenA PARAMS parenC BLOQUE_DELIMITADO {{  
-        $$ = { type: 'metodo', return_type: $1, id: $2, params: $4, body:$6 } 
+        $$ = { type: 'metodo', return_type: $1, id: $2, size: $4.size, params: $4, body:$6 } 
     }}
 |   TIPO ID parenA parenC BLOQUE_DELIMITADO {{  
-        $$ = { type: 'metodo', return_type: $1, id: $2, body:$5 }        
+        $$ = { type: 'metodo', return_type: $1, id: $2, size: $5.size, body:$5 }        
     }}
 |   void ID parenA PARAMS parenC BLOQUE_DELIMITADO {{  
-        $$ = { type: 'metodo', id: $2, params: $4, body:$6 } 
+        $$ = { type: 'metodo', id: $2, size: $4.size, params: $4, body:$6 } 
     }}
-|   void ID parenA parenC BLOQUE_DELIMITADO {{  
-        $$ = { type: 'metodo', id: $2, body:$5 }        
+|   void ID parenA parenC BLOQUE_DELIMITADO {{          
+        $$ = { type: 'metodo', id: $2, size: $5.size, body:$5 }        
     }}}
 ;
 
@@ -87,9 +88,10 @@ PARAMS:
         var arr2 = arr.concat($3); 
         $1.children = arr2; 
         $$ = $1;  
+        $$.size = $1.size + 1;
     }}
 |   PARAM {{
-        $$ = { type: 'params', children: [$1] }
+        $$ = { type: 'params', size: 1, children: [$1] }
     }} 
 ;
 
@@ -100,16 +102,16 @@ PARAM:
 
 WHILE :
     mientras parenA E parenC BLOQUE_SENTS {{
-        $$ = { type:'while', cond: $3, body: $5 }
+        $$ = { type:'while', size: 0, cond: $3, body: $5 }
     }}
 ;
 
 IF: 
     si parenA E parenC BLOQUE_SENTS %prec THEN {{
-        $$ = { type:'if', cond: $3, body: $5 }
+        $$ = { type:'if', size: 0, cond: $3, body: $5 }
     }}
 |   si parenA E parenC BLOQUE_SENTS sino BLOQUE_SENTS {{
-        $$ = { type:'if', cond: $3, body: $5, body_else: $7 }
+        $$ = { type:'if', size: 0, cond: $3, body: $5, body_else: $7 }
     }}
     
 ;
@@ -120,9 +122,10 @@ DECL :
         var arr2 = arr.concat($3); 
         $1.children = arr2; 
         $$ = $1;  
+        $$.size = $1.size + 1;
     }}
 |   TIPO DECL_SUBJECT {{
-        $$ = { type: 'dcl', data_type: $1 children: [$2] }
+        $$ = { type: 'dcl', data_type: $1, size: 1, children: [$2] }
     }} 
 ;
 
@@ -148,13 +151,13 @@ TIPO : entero  {{
 
 ASIGNACION_ID :
     ID asigna E {{
-        $$ = { type: '=', children: [$1, $3] }
+        $$ = { type: '=', size: 0, children: [$1, $3] }
     }}
 ;
 
 ASIGNACION :
     ASIGNACION_ID {{
-        $$ = $1;
+        $$ = $1;        
     }} 
 ;
 

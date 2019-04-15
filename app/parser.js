@@ -86,24 +86,24 @@ switch (yystate) {
 case 1:
  return $$[$0-1] 
 break;
-case 2: case 25: case 26: case 31:
+case 2: case 31:
 
-        this.$ = $$[$0];
+        this.$ = $$[$0];        
     
 break;
 case 3:
   
-        this.$ = { type: 'sents', children: [$$[$0]] } 
+        this.$ = { type: 'sents', size: $$[$0].size, children: [$$[$0]] } 
     
 break;
 case 4:
 
-        this.$ = $$[$0-1];
+        this.$ = $$[$0-1];        
     
 break;
 case 5:
   
-        this.$ = { type: 'sents' } 
+        this.$ = { type: 'sents', size: 0 } 
     
 break;
 case 6:
@@ -112,35 +112,39 @@ case 6:
             var arr2 = arr.concat($$[$0]); 
             $$[$0-1].children = arr2; 
             this.$ = $$[$0-1];  
+            this.$.size += $$[$0].size;
         
 break;
 case 7:
-  this.$ = { type: 'sents', children: [$$[$0]] } 
+  this.$ = { type: 'sents', size: $$[$0].size, children: [$$[$0]] } 
 break;
-case 8: case 9:
+case 8:
  this.$ = $$[$0-1] 
+break;
+case 9:
+ this.$ = $$[$0-1]
 break;
 case 10: case 11: case 12:
  this.$ = $$[$0] 
 break;
 case 13:
   
-        this.$ = { type: 'metodo', return_type: $$[$0-5], id: $$[$0-4], params: $$[$0-2], body:$$[$0] } 
+        this.$ = { type: 'metodo', return_type: $$[$0-5], id: $$[$0-4], size: $$[$0-2].size, params: $$[$0-2], body:$$[$0] } 
     
 break;
 case 14:
   
-        this.$ = { type: 'metodo', return_type: $$[$0-4], id: $$[$0-3], body:$$[$0] }        
+        this.$ = { type: 'metodo', return_type: $$[$0-4], id: $$[$0-3], size: $$[$0].size, body:$$[$0] }        
     
 break;
 case 15:
   
-        this.$ = { type: 'metodo', id: $$[$0-4], params: $$[$0-2], body:$$[$0] } 
+        this.$ = { type: 'metodo', id: $$[$0-4], size: $$[$0-2].size, params: $$[$0-2], body:$$[$0] } 
     
 break;
 case 16:
-  
-        this.$ = { type: 'metodo', id: $$[$0-3], body:$$[$0] }        
+          
+        this.$ = { type: 'metodo', id: $$[$0-3], size: $$[$0].size, body:$$[$0] }        
     
 break;
 case 17: case 23:
@@ -149,11 +153,12 @@ case 17: case 23:
         var arr2 = arr.concat($$[$0]); 
         $$[$0-2].children = arr2; 
         this.$ = $$[$0-2];  
+        this.$.size = $$[$0-2].size + 1;
     
 break;
 case 18:
 
-        this.$ = { type: 'params', children: [$$[$0]] }
+        this.$ = { type: 'params', size: 1, children: [$$[$0]] }
     
 break;
 case 19:
@@ -161,22 +166,27 @@ case 19:
 break;
 case 20:
 
-        this.$ = { type:'while', cond: $$[$0-2], body: $$[$0] }
+        this.$ = { type:'while', size: 0, cond: $$[$0-2], body: $$[$0] }
     
 break;
 case 21:
 
-        this.$ = { type:'if', cond: $$[$0-2], body: $$[$0] }
+        this.$ = { type:'if', size: 0, cond: $$[$0-2], body: $$[$0] }
     
 break;
 case 22:
 
-        this.$ = { type:'if', cond: $$[$0-4], body: $$[$0-2], body_else: $$[$0] }
+        this.$ = { type:'if', size: 0, cond: $$[$0-4], body: $$[$0-2], body_else: $$[$0] }
     
 break;
 case 24:
 
-        this.$ = { type: 'dcl', data_type: $$[$0-1] children: [$$[$0]] }
+        this.$ = { type: 'dcl', data_type: $$[$0-1], size: 1, children: [$$[$0]] }
+    
+break;
+case 25: case 26:
+
+        this.$ = $$[$0];
     
 break;
 case 27:
@@ -196,7 +206,7 @@ case 29:
 break;
 case 30:
 
-        this.$ = { type: '=', children: [$$[$0-2], $$[$0]] }
+        this.$ = { type: '=', size: 0, children: [$$[$0-2], $$[$0]] }
     
 break;
 case 32:
