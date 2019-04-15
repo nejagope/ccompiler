@@ -21,12 +21,13 @@
             function compile(){
                 var code = $("#txtCode").val();
                 
-                try{            
-                    var res = parser.parse(code);                    
-                    $("#txtResult").text(JSON.stringify(res.ast)); 
-                    $("#txtTS").text(JSON.stringify(res.ts));
-                    $("#txtErrs").text(JSON.stringify(res.errs));
+                try{                       
+                    var ast = parser.parse(code);                    
+                    $("#txtResult").text(JSON.stringify(ast)); 
+                    //$("#txtTS").text(JSON.stringify(res.ts));
+                    //$("#txtErrs").text(JSON.stringify(res.errs));
                     
+                    /*
                     if (res.errs.length > 0){                        
                         $("#alertFail").fadeTo(2000, 500).slideUp(1000, function(){
                             $("#alertFail").slideUp(500);
@@ -38,6 +39,7 @@
                         });
                         $("#alertFail").hide();
                     }
+                    */
                 }catch(ex){
                     $("#txtResult").text(ex);
                 }                

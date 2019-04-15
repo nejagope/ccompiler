@@ -1,15 +1,7 @@
-%{
-    var nid = 0;
-    var valor, size;
-
-    var ts = [];    //tabla de símbolos
-    var errs = []; //tabla de errores
-
-    function addChildren(node, child){
-      node.splice(2,1,child); 
-      return node;
-    }    
+%{    
+    var valor, size, simbolo;
 %}
+
 %locations
 
 %left menor menorI mayor mayorI igual noIgual
@@ -29,7 +21,7 @@
 
 %%
 
-S : STATEMENTS eof {{ return {ast: $1, ts: ts, errs: errs } }};
+S : STATEMENTS eof {{ return $1 }};
 
 STATEMENTS : 
     STATEMENTS STATEMENT {{ 
@@ -124,17 +116,17 @@ RETURN :
 
 METODO:
     TIPO ID parenA PARAMS parenC BLOQUE_DELIMITADO {{  
-        $$ = { type: 'metodo', return_type: $1, id: $2, size: $4.size, params: $4, body:$6 } 
+        $$ = { type: 'metodo', return_type: $1, id: $2, size: $4.size, params: $4, body:$6 }         
     }}
 |   TIPO ID parenA parenC BLOQUE_DELIMITADO {{  
-        $$ = { type: 'metodo', return_type: $1, id: $2, size: $5.size, body:$5 }        
+        $$ = { type: 'metodo', return_type: $1, id: $2, size: $5.size, body:$5 }                
     }}
 |   void ID parenA PARAMS parenC BLOQUE_DELIMITADO {{  
-        $$ = { type: 'metodo', id: $2, size: $4.size, params: $4, body:$6 } 
+        $$ = { type: 'metodo', id: $2, size: $4.size, params: $4, body:$6 }         
     }}
 |   void ID parenA parenC BLOQUE_DELIMITADO {{          
-        $$ = { type: 'metodo', id: $2, size: $5.size, body:$5 }        
-    }}}
+        $$ = { type: 'metodo', id: $2, size: $5.size, body:$5 }                
+    }}
 ;
 
 PARAMS: 
@@ -221,40 +213,40 @@ ID : id {{  $$ = { type: 'id', val: $1 } }} ;
 E
     : E mas E
         {{                       
-            $$ = {type: '+', children: [$1, $3] } 
+            $$ = { type: '+', children: [$1, $3] } 
         }}
     | E menos E {{                       
-            $$ = {type: '-', children: [$1, $3] } 
+            $$ = { type: '-', children: [$1, $3] } 
         }}
     | E por E{{                       
-            $$ = {type: '*', children: [$1, $3] } 
+            $$ = { type: '*', children: [$1, $3] } 
         }}
     | E div E {{                       
-            $$ = {type: '/', children: [$1, $3] } 
+            $$ = { type: '/', children: [$1, $3] } 
         }}
     | E pow E {{                       
-            $$ = {type: '^', children: [$1, $3] } 
+            $$ = { type: '^', children: [$1, $3] } 
         }}
     | menos E %prec UMINUS {{                       
-            $$ = {type: '-', children: [$2] } 
+            $$ = { type: '-', children: [$2] } 
         }}
     | parenA E parenC
         {{ $$ = $2; }}
     | boolLit   {{ 
             valor = yytext.toLowerCase() == 'true'; 
-            $$ = {type: 'boolLit', val: valor } 
+            $$ = { type: 'boolLit', val: valor } 
         }}
     | intLit {{ 
             valor = parseInt(yytext);
-            $$ = {type: 'intLit', val: valor } 
+            $$ = { type: 'intLit', val: valor } 
         }}
     | floatLit {{ 
             valor = parseFloat(yytext);
-            $$ = {type: 'floatLit', val: valor} 
+            $$ = { type: 'floatLit', val: valor} 
         }}
     | stringLit {{ 
             valor = yytext;
-            $$ = {type: 'stringLit', val: valor } 
+            $$ = { type: 'stringLit', val: valor } 
         }}
     | ID {{             
             $$ = $1; 
