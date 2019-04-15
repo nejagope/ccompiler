@@ -23,7 +23,7 @@
                 
                 try{            
                     var res = parser.parse(code);                    
-                    $("#txtResult").text(JSON.stringify(res));
+                    $("#txtResult").text(JSON.stringify(res.ast));                    
                 }catch(ex){
                     $("#txtResult").text(ex);
                 }                

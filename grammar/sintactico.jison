@@ -2,6 +2,9 @@
     var nid = 0;
     var valor, size;
 
+    var ts = [];    //tabla de símbolos
+    var errs = []; //tabla de errores
+
     function addChildren(node, child){
       node.splice(2,1,child); 
       return node;
@@ -26,7 +29,7 @@
 
 %%
 
-S : STATEMENTS eof {{ return $1 }};
+S : STATEMENTS eof {{ return {ast: $1, ts: ts, errs: errs } }};
 
 STATEMENTS : 
     STATEMENTS STATEMENT {{ 

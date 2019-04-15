@@ -84,7 +84,7 @@ performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* actio
 var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
- return $$[$0-1] 
+ return {ast: $$[$0-1], ts: ts, errs: errs } 
 break;
 case 2:
  
@@ -152,12 +152,12 @@ case 12: case 16:
 break;
 case 17:
 
-        this.$ = { type: 'return', children: [$$[$0]] }
+        this.$ = { type: 'return', size: 1, children: [$$[$0]] }
     
 break;
 case 18:
 
-        this.$ = { type: 'return' }
+        this.$ = { type: 'return', size: 0 }
     
 break;
 case 19:
@@ -460,6 +460,9 @@ parse: function parse(input) {
 
     var nid = 0;
     var valor, size;
+
+    var ts = [];    //tabla de símbolos
+    var errs = []; //tabla de errores
 
     function addChildren(node, child){
       node.splice(2,1,child); 
