@@ -56,6 +56,14 @@ STATEMENTS :
 STATEMENT:
     DECL ptoComa {{ $$ = $1}}
 |   METODO {{ $$ = $1 }}
+|   error ptoComa {{       
+        $$ = { msj: 'Syntax error', line: @1.first_line, column: @1.first_column };
+        errs = errs.concat( { msj: 'Syntax error', text: yytext, line: @1.first_line, column: @1.first_column });
+    }}
+|   error llaveC {{       
+        $$ = { msj: 'Syntax error', line: @1.first_line, column: @1.first_column };
+        errs = errs.concat( { msj: 'Syntax error', text: yytext, line: @1.first_line, column: @1.first_column });
+    }}
 ;
 
 BLOQUE_SENTS :
@@ -95,6 +103,14 @@ SENT :
 |   IF {{ $$ = $1 }}
 |   WHILE {{ $$ = $1 }}
 |   RETURN ptoComa {{ $$ = $1 }}
+|   error ptoComa {{       
+        $$ = { msj: 'Syntax error', line: @1.first_line, column: @1.first_column };
+        errs = errs.concat( { msj: 'Syntax error', text: yytext, line: @1.first_line, column: @1.first_column });
+    }}
+|   error llaveC {{       
+        $$ = { msj: 'Syntax error', line: @1.first_line, column: @1.first_column };
+        errs = errs.concat( { msj: 'Syntax error', text: yytext, line: @1.first_line, column: @1.first_column });
+    }}
 ;
 
 RETURN :
