@@ -49,7 +49,7 @@
 "else" 		return 'sino'
 "break" 	return '_break'
 "continue" 	return '_continue'
-"return" 	return '_return'
+"return" 	return 'retornar'
 
 /*-------------------------------------------- FIN PALABRAS RESERVADAS ------------------------------*/
 

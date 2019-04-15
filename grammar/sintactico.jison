@@ -91,6 +91,16 @@ SENT :
 |   ASIGNACION ptoComa {{ $$ = $1}}
 |   IF {{ $$ = $1 }}
 |   WHILE {{ $$ = $1 }}
+|   RETURN ptoComa {{ $$ = $1 }}
+;
+
+RETURN :
+    retornar E {{
+        $$ = { type: 'return', children: [$2] }
+    }}
+|   retornar {{
+        $$ = { type: 'return' }
+    }}
 ;
 
 METODO:
