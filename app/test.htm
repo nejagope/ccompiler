@@ -2,6 +2,7 @@
 <html>
     <head>
         <script src="parser.js"></script>        
+        <script src="analyzer.js"></script>  
 
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -24,10 +25,10 @@
                 try{                       
                     var ast = parser.parse(code);                    
                     $("#txtResult").text(JSON.stringify(ast)); 
-                    //$("#txtTS").text(JSON.stringify(res.ts));
-                    //$("#txtErrs").text(JSON.stringify(res.errs));
-                    
-                    /*
+                    var res = analyzeAST(ast);
+                    $("#txtTS").text(JSON.stringify(res.ts));
+                    $("#txtErrs").text(JSON.stringify(res.errs));
+                                        
                     if (res.errs.length > 0){                        
                         $("#alertFail").fadeTo(2000, 500).slideUp(1000, function(){
                             $("#alertFail").slideUp(500);
@@ -39,7 +40,7 @@
                         });
                         $("#alertFail").hide();
                     }
-                    */
+                    
                 }catch(ex){
                     $("#txtResult").text(ex);
                 }                
