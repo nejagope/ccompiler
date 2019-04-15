@@ -1,6 +1,6 @@
 %{
     var nid = 0;
-    var valor;
+    var valor, size;
 
     function addChildren(node, child){
       node.splice(2,1,child); 
@@ -26,7 +26,34 @@
 
 %%
 
-S : SENTS eof {{ return $1 }};
+S : STATEMENTS eof {{ return $1 }};
+
+STATEMENTS : 
+    STATEMENTS STATEMENT {{ 
+            var arr = $1.children; 
+            var arr2 = arr.concat($2); 
+            $1.children = arr2; 
+            $$ = $1;  
+
+            if ($2.type == 'dcl')
+                size = $2.size;
+            else
+                size = 0;
+            $$.size += size;
+        }}
+|   STATEMENT {{  
+        if ($1.type == 'dcl')
+            size = $1.size;
+        else
+            size = 0;
+        $$ = { type: 'stmnts', size: size, children: [$1] } 
+    }}
+;
+
+STATEMENT:
+    DECL ptoComa {{ $$ = $1}}
+|   METODO {{ $$ = $1 }}
+;
 
 BLOQUE_SENTS :
     BLOQUE_DELIMITADO {{
@@ -64,7 +91,6 @@ SENT :
 |   ASIGNACION ptoComa {{ $$ = $1}}
 |   IF {{ $$ = $1 }}
 |   WHILE {{ $$ = $1 }}
-|   METODO {{ $$ = $1 }}
 ;
 
 METODO:
