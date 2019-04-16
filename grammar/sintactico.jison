@@ -49,12 +49,10 @@ STATEMENT:
     DECL ptoComa {{ $$ = $1}}
 |   METODO {{ $$ = $1 }}
 |   error ptoComa {{       
-        $$ = { msj: 'Syntax error', line: @1.first_line, column: @1.first_column };
-        errs = errs.concat( { msj: 'Syntax error', text: yytext, line: @1.first_line, column: @1.first_column });
+        $$ = { msj: 'Syntax error', line: @1.first_line, column: @1.first_column };        
     }}
 |   error llaveC {{       
-        $$ = { msj: 'Syntax error', line: @1.first_line, column: @1.first_column };
-        errs = errs.concat( { msj: 'Syntax error', text: yytext, line: @1.first_line, column: @1.first_column });
+        $$ = { msj: 'Syntax error', line: @1.first_line, column: @1.first_column };        
     }}
 ;
 
@@ -96,12 +94,10 @@ SENT :
 |   WHILE {{ $$ = $1 }}
 |   RETURN ptoComa {{ $$ = $1 }}
 |   error ptoComa {{       
-        $$ = { msj: 'Syntax error', line: @1.first_line, column: @1.first_column };
-        errs = errs.concat( { msj: 'Syntax error', text: yytext, line: @1.first_line, column: @1.first_column });
+        $$ = { msj: 'Syntax error', line: @1.first_line, column: @1.first_column };        
     }}
 |   error llaveC {{       
-        $$ = { msj: 'Syntax error', line: @1.first_line, column: @1.first_column };
-        errs = errs.concat( { msj: 'Syntax error', text: yytext, line: @1.first_line, column: @1.first_column });
+        $$ = { msj: 'Syntax error', line: @1.first_line, column: @1.first_column };        
     }}
 ;
 
@@ -122,10 +118,10 @@ METODO:
         $$ = { type: 'metodo', return_type: $1, id: $2, size: $5.size, body:$5 }                
     }}
 |   void ID parenA PARAMS parenC BLOQUE_DELIMITADO {{  
-        $$ = { type: 'metodo', id: $2, size: $4.size, params: $4, body:$6 }         
+        $$ = { type: 'metodo', id: $2, return_type: { type: 'tipo', val: 'void' }, size: $4.size, params: $4, body:$6 }         
     }}
 |   void ID parenA parenC BLOQUE_DELIMITADO {{          
-        $$ = { type: 'metodo', id: $2, size: $5.size, body:$5 }                
+        $$ = { type: 'metodo', id: $2, return_type: { type: 'tipo', val: 'void' }, size: $5.size, body:$5 }                
     }}
 ;
 

@@ -25,6 +25,7 @@
                 try{                       
                     var ast = parser.parse(code);                    
                     $("#txtResult").text(JSON.stringify(ast)); 
+                    
                     var res = analyzeAST(ast);
                     $("#txtTS").text(JSON.stringify(res.ts));
                     $("#txtErrs").text(JSON.stringify(res.errs));
@@ -40,6 +41,7 @@
                         });
                         $("#alertFail").hide();
                     }
+                    
                     
                 }catch(ex){
                     $("#txtResult").text(ex);

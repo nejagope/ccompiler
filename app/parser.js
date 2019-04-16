@@ -117,8 +117,7 @@ case 5: case 16: case 17:
 break;
 case 6: case 7: case 19: case 20:
        
-        this.$ = { msj: 'Syntax error', line: _$[$0-1].first_line, column: _$[$0-1].first_column };
-        errs = errs.concat( { msj: 'Syntax error', text: yytext, line: _$[$0-1].first_line, column: _$[$0-1].first_column });
+        this.$ = { msj: 'Syntax error', line: _$[$0-1].first_line, column: _$[$0-1].first_column };        
     
 break;
 case 8: case 41:
@@ -178,12 +177,12 @@ case 24:
 break;
 case 25:
   
-        this.$ = { type: 'metodo', id: $$[$0-4], size: $$[$0-2].size, params: $$[$0-2], body:$$[$0] }         
+        this.$ = { type: 'metodo', id: $$[$0-4], return_type: { type: 'tipo', val: 'void' }, size: $$[$0-2].size, params: $$[$0-2], body:$$[$0] }         
     
 break;
 case 26:
           
-        this.$ = { type: 'metodo', id: $$[$0-3], size: $$[$0].size, body:$$[$0] }                
+        this.$ = { type: 'metodo', id: $$[$0-3], return_type: { type: 'tipo', val: 'void' }, size: $$[$0].size, body:$$[$0] }                
     
 break;
 case 27: case 33:
