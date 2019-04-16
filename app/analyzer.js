@@ -75,6 +75,10 @@ function analyze(ast, ts, errs, ambito){
             }, ast);
             break;
 
+        case 'error':
+            errs.push(ast);
+            break;
+
         default:
             if (ast.body){
                 idAmbito++;
