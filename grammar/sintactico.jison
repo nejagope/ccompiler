@@ -93,12 +93,35 @@ SENT :
 |   IF {{ $$ = $1 }}
 |   WHILE {{ $$ = $1 }}
 |   RETURN ptoComa {{ $$ = $1 }}
+|   CALL ptoComa {{ $$ = $1 }}
 |   error ptoComa {{       
         $$ = { type: 'error', msj: 'Syntax error', line: @1.first_line, column: @1.first_column };        
     }}
 |   error llaveC {{       
         $$ = { type: 'error', msj: 'Syntax error', line: @1.first_line, column: @1.first_column };        
     }}
+;
+
+CALL :
+    ID parenA ARGS parenC {{
+        $$ = { type: 'call', size: 0, id: $1, args:$3}
+    }}
+|   ID parenA parenC {{
+        $$ = { type: 'call', size: 0, id: $1}
+    }}
+;
+
+ARGS : 
+    ARGS coma E {{ 
+        var arr = $1.children; 
+        var arr2 = arr.concat($3); 
+        $1.children = arr2; 
+        $$ = $1;  
+        $$.size = $1.size + 1;
+    }}
+|   E {{
+        $$ = { type: 'args', size: 1, children: [$1] }
+    }} 
 ;
 
 RETURN :
@@ -247,4 +270,7 @@ E
     | ID {{             
             $$ = $1; 
         }}
+    | CALL {{
+        $$ = $1; 
+    }}
     ;
