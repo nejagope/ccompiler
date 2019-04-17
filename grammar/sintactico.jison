@@ -7,7 +7,7 @@
 %left menor menorI mayor mayorI igual noIgual
 %left or
 %left and
-%left not 
+%left NOT 
 
 %left mas menos
 %left por div mod
@@ -230,7 +230,31 @@ ASIGNACION :
 ID : id {{  $$ = { type: 'id', val: $1 } }} ;
 
 E
-    : E mas E
+    : E and E {{                       
+            $$ = { type: '&&', children: [$1, $3] } 
+        }}
+    | E or E {{                       
+            $$ = { type: '||', children: [$1, $3] } 
+        }}
+    | E menorI E {{                       
+            $$ = { type: '<=', children: [$1, $3] } 
+        }}
+    | E mayorI E {{                       
+            $$ = { type: '>=', children: [$1, $3] } 
+        }}
+    | E menor E {{                       
+            $$ = { type: '<', children: [$1, $3] } 
+        }}
+    | E mayor E {{                       
+            $$ = { type: '>', children: [$1, $3] } 
+        }}
+    | E noIgual E {{                       
+            $$ = { type: '!=', children: [$1, $3] } 
+        }}
+    | E igual E {{                       
+            $$ = { type: '==', children: [$1, $3] } 
+        }}
+    | E mas E
         {{                       
             $$ = { type: '+', children: [$1, $3] } 
         }}
@@ -243,11 +267,17 @@ E
     | E div E {{                       
             $$ = { type: '/', children: [$1, $3] } 
         }}
+    | E mod E {{                       
+            $$ = { type: '%', children: [$1, $3] } 
+        }}
     | E pow E {{                       
             $$ = { type: '^', children: [$1, $3] } 
         }}
     | menos E %prec UMINUS {{                       
             $$ = { type: '-', children: [$2] } 
+        }}
+    | not E %prec NOT {{                       
+            $$ = { type: '!', children: [$2] } 
         }}
     | parenA E parenC
         {{ $$ = $2; }}
