@@ -1,14 +1,41 @@
-var idAmbito;
-
 
 function analyzeAST(ast){
     var ts = [], errs = []; 
-    idAmbito = 0;
-    var ambito = [idAmbito];            
-    analyze(ast, ts, errs, ambito);
     
-    console.log(ts);
+    var ambito = 'global';            
+    analyze(ast, ts, errs, ambito);
+        
     return {ts: ts, errs: errs };
+}
+
+function addSymbol(ts, newSymbol, errs){
+    let symbolExists = false;
+    ts.forEach(function(symbol){
+        if (symbol.id == newSymbol.id
+            && ( symbol.type == 'param' && (newSymbol.type == 'param' || newSymbol.type == 'var') || symbol.type == newSymbol.type)
+            && !(symbol.ambito == 'global' && newSymbol.type == 'var')            
+            ){
+                symbolExists = true;
+                return false;
+        }        
+    });
+    if (symbolExists){
+        errs.push({
+            type: 'error', msj: 'identifier already declared: ' + newSymbol.id
+        });
+    }else{
+        ts.push(newSymbol);
+    }
+}
+
+function searchSymbol(ts, id, type){
+    let symbolFound = null;
+    ts.forEach(function(symbol){
+        if (symbol.id == id && symbol.type == type) {
+            symbolFound = symbol;                
+        }        
+    });
+    return symbolFound;
 }
 
 
@@ -22,7 +49,10 @@ function analyze(ast, ts, errs, ambito){
             ast.children.forEach(function(stmnt, i, ast){
                 analyze(stmnt, ts, errs, ambito);
             }, ast);  
-            ast.ambito = ambito.slice(0);          
+            if (ast.type == 'sents'){                
+                for (i = 0; i < (ast.size); i++)
+                    ts.pop();
+            }
             break;
         
         case 'dcl':            
@@ -36,9 +66,9 @@ function analyze(ast, ts, errs, ambito){
                     id : id,
                     type: 'var',
                     data_type: this.data_type.val, 
-                    ambito: ambito.slice(0)                   
+                    ambito: ambito
                 };                
-                ts.push(symbol);
+                addSymbol(ts, symbol, errs);
             }, ast);
             break;
 
@@ -49,17 +79,19 @@ function analyze(ast, ts, errs, ambito){
                 return_type: ast.return_type.val,
                 data_type: ast.return_type.val,                    
                 size: ast.size,
-                ambito: ambito.slice(0)
+                ambito: ambito
             };
-            ts.push(symbol);
-            idAmbito++;
-            ambito.push(idAmbito);
-
+            
+            addSymbol(ts, symbol, errs);
+            
             if (ast.params){
-                analyze(ast.params, ts, errs, ambito);
+                analyze(ast.params, ts, errs, 'metodo:' + symbol.id);
             }
-            analyze(ast.body, ts, errs, ambito);
-            ambito.pop();
+            analyze(ast.body, ts, errs, 'metodo:' + symbol.id);            
+            
+            
+            for (i = 0; i < (symbol.size); i++)
+                ts.pop();
             break;
 
         case 'params':
@@ -69,10 +101,25 @@ function analyze(ast, ts, errs, ambito){
                     type: 'param',
                     data_type: param.data_type.val,                    
                     position: i,
-                    ambito: ambito.slice(0)
+                    ambito: ambito
                 };                
-                ts.push(symbol);
+                addSymbol(ts, symbol, errs);
             }, ast);
+            break;
+
+        case '=':
+            let asignando = ast.children[0];
+            if (asignando.type == 'id'){
+                symbol = searchSymbol(ts, asignando.val, 'var');
+                if (!symbol)
+                    symbol = searchSymbol(ts, asignando.val, 'param');
+                
+                if (!symbol){
+                    errs.push({
+                        type: 'error', msj: 'identifier has not been declared: ' + asignando.val
+                    });
+                }
+            }
             break;
 
         case 'error':
@@ -80,11 +127,8 @@ function analyze(ast, ts, errs, ambito){
             break;
 
         default:
-            if (ast.body){
-                idAmbito++;
-                ambito.push(idAmbito);
-                analyze(ast.body, ts, errs, ambito);
-                ambito.pop();
+            if (ast.body){                
+                analyze(ast.body, ts, errs, ambito + ':' + ast.type);                
             }                        
     }
 }

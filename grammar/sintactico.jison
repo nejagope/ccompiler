@@ -138,13 +138,13 @@ METODO:
         $$ = { type: 'metodo', return_type: $1, id: $2, size: $4.size, params: $4, body:$6 }         
     }}
 |   TIPO ID parenA parenC BLOQUE_DELIMITADO {{  
-        $$ = { type: 'metodo', return_type: $1, id: $2, size: $5.size, body:$5 }                
+        $$ = { type: 'metodo', return_type: $1, id: $2, size: 0, body:$5 }                
     }}
 |   void ID parenA PARAMS parenC BLOQUE_DELIMITADO {{  
         $$ = { type: 'metodo', id: $2, return_type: { type: 'tipo', val: 'void' }, size: $4.size, params: $4, body:$6 }         
     }}
 |   void ID parenA parenC BLOQUE_DELIMITADO {{          
-        $$ = { type: 'metodo', id: $2, return_type: { type: 'tipo', val: 'void' }, size: $5.size, body:$5 }                
+        $$ = { type: 'metodo', id: $2, return_type: { type: 'tipo', val: 'void' }, size: 0, body:$5 }                
     }}
 ;
 

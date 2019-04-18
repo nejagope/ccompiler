@@ -196,7 +196,7 @@ case 28:
 break;
 case 29:
   
-        this.$ = { type: 'metodo', return_type: $$[$0-4], id: $$[$0-3], size: $$[$0].size, body:$$[$0] }                
+        this.$ = { type: 'metodo', return_type: $$[$0-4], id: $$[$0-3], size: 0, body:$$[$0] }                
     
 break;
 case 30:
@@ -206,7 +206,7 @@ case 30:
 break;
 case 31:
           
-        this.$ = { type: 'metodo', id: $$[$0-3], return_type: { type: 'tipo', val: 'void' }, size: $$[$0].size, body:$$[$0] }                
+        this.$ = { type: 'metodo', id: $$[$0-3], return_type: { type: 'tipo', val: 'void' }, size: 0, body:$$[$0] }                
     
 break;
 case 33:
