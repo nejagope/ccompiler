@@ -28,7 +28,7 @@
                     $("#txtResult").text(JSON.stringify(ast)); 
                     
                     var res = analyzeAST(ast);
-                    $("#txtTS").text(JSON.stringify(res.ts));
+                    $("#txtTS").text(JSON.stringify(res.ts.symbols));
                     $("#txtErrs").text(JSON.stringify(res.errs));
                                         
                     if (res.errs.length > 0){                        

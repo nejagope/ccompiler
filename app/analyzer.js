@@ -1,43 +1,57 @@
 
-function analyzeAST(ast){
-    var ts = [], errs = []; 
+function analyzeAST(ast){    
+
+    //errors table
+    var errs = []; 
+    
+    //symbols table
+    var ts = {
+        symbols: [],
+
+        add: function (newSymbol, errs){
+            let symbolExists = false;
+            
+            this.symbols.forEach(function(symbol){
+                if (symbol.id == newSymbol.id
+                    && ( symbol.type == 'param' && (newSymbol.type == 'param' || newSymbol.type == 'var') || symbol.type == newSymbol.type)
+                    && !(symbol.ambito == 'global' && newSymbol.type == 'var')            
+                    ){
+                        symbolExists = true;
+                        return false;
+                }        
+            });
+
+            if (symbolExists){
+                errs.push({
+                    type: 'error', msj: 'identifier already declared: ' + newSymbol.id
+                });
+            }else{
+                this.symbols.push(newSymbol);
+            }
+        },
+
+        pop: function(){
+            if (this.symbols.length > 0)
+                return this.symbols.pop();
+            return null;
+        },
+
+        find: function (id, type){
+            let symbolFound = null;
+            
+            this.symbols.forEach(function(symbol){
+                if (symbol.id == id && symbol.type == type) {
+                    symbolFound = symbol;                
+                }        
+            });
+            return symbolFound;
+        }                
+    }; 
     
     var ambito = 'global';            
-    analyze(ast, ts, errs, ambito);
-        
+    analyze(ast, ts, errs, ambito);        
     return {ts: ts, errs: errs };
 }
-
-function addSymbol(ts, newSymbol, errs){
-    let symbolExists = false;
-    ts.forEach(function(symbol){
-        if (symbol.id == newSymbol.id
-            && ( symbol.type == 'param' && (newSymbol.type == 'param' || newSymbol.type == 'var') || symbol.type == newSymbol.type)
-            && !(symbol.ambito == 'global' && newSymbol.type == 'var')            
-            ){
-                symbolExists = true;
-                return false;
-        }        
-    });
-    if (symbolExists){
-        errs.push({
-            type: 'error', msj: 'identifier already declared: ' + newSymbol.id
-        });
-    }else{
-        ts.push(newSymbol);
-    }
-}
-
-function searchSymbol(ts, id, type){
-    let symbolFound = null;
-    ts.forEach(function(symbol){
-        if (symbol.id == id && symbol.type == type) {
-            symbolFound = symbol;                
-        }        
-    });
-    return symbolFound;
-}
-
 
 function analyze(ast, ts, errs, ambito){
     var symbol, id;
@@ -68,7 +82,7 @@ function analyze(ast, ts, errs, ambito){
                     data_type: this.data_type.val, 
                     ambito: ambito
                 };                
-                addSymbol(ts, symbol, errs);
+                ts.add(symbol, errs);
             }, ast);
             break;
 
@@ -82,7 +96,7 @@ function analyze(ast, ts, errs, ambito){
                 ambito: ambito
             };
             
-            addSymbol(ts, symbol, errs);
+            ts.add(symbol, errs);
             
             if (ast.params){
                 analyze(ast.params, ts, errs, 'metodo:' + symbol.id);
@@ -103,16 +117,16 @@ function analyze(ast, ts, errs, ambito){
                     position: i,
                     ambito: ambito
                 };                
-                addSymbol(ts, symbol, errs);
+                ts.add(symbol, errs);
             }, ast);
             break;
 
         case '=':
             let asignando = ast.children[0];
             if (asignando.type == 'id'){
-                symbol = searchSymbol(ts, asignando.val, 'var');
+                symbol = ts.find(asignando.val, 'var');
                 if (!symbol)
-                    symbol = searchSymbol(ts, asignando.val, 'param');
+                    symbol = ts.find(asignando.val, 'param');
                 
                 if (!symbol){
                     errs.push({
