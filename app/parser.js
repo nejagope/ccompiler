@@ -337,7 +337,7 @@ case 61:
 break;
 case 62:
                        
-            this.$ = { type: '-', children: [$$[$0]] } 
+            this.$ = { type: '(-)', children: [$$[$0]] } 
         
 break;
 case 63:

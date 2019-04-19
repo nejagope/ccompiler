@@ -274,7 +274,7 @@ E
             $$ = { type: '^', children: [$1, $3] } 
         }}
     | menos E %prec UMINUS {{                       
-            $$ = { type: '-', children: [$2] } 
+            $$ = { type: '(-)', children: [$2] } 
         }}
     | not E %prec NOT {{                       
             $$ = { type: '!', children: [$2] } 

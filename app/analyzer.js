@@ -45,7 +45,29 @@ function analyzeAST(ast){
                 }        
             });
             return symbolFound;
-        }                
+        },
+        
+        findVarOrParam: function (id){
+            let symbolFound = null;
+            
+            this.symbols.forEach(function(symbol){
+                if (symbol.id == id && (symbol.type == 'var' || symbol.type == 'param')) {
+                    symbolFound = symbol;                
+                }        
+            });
+            return symbolFound;
+        },
+        
+        findByAmbito: function(type, ambito){
+            let symbolsFound = [];
+            
+            this.symbols.forEach(function(symbol){
+                if (symbol.ambito == ambito && symbol.type == type) {
+                    symbolsFound.push(symbol);                
+                }        
+            });
+            return symbolsFound;
+        }
     }; 
     
     var ambito = 'global';            
@@ -59,7 +81,9 @@ function analyze(ast, ts, errs, ambito){
     switch (ast.type){
         
         case 'stmnts':
-        case 'sents':               
+        case 'sents': 
+            if (!ast.children)
+                return;              
             ast.children.forEach(function(stmnt, i, ast){
                 analyze(stmnt, ts, errs, ambito);
             }, ast);  
@@ -93,7 +117,8 @@ function analyze(ast, ts, errs, ambito){
                 return_type: ast.return_type.val,
                 data_type: ast.return_type.val,                    
                 size: ast.size,
-                ambito: ambito
+                ambito: ambito,
+                body: ast.body
             };
             
             ts.add(symbol, errs);

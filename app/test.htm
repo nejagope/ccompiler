@@ -4,6 +4,7 @@
         <meta charset="utf8">
         <script src="parser.js"></script>        
         <script src="analyzer.js"></script>  
+        <script src="runner.js"></script>  
 
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -21,33 +22,53 @@
         <script>
 
             function compile(){
+                $("#txtConsole").text("");
                 var code = $("#txtCode").val();
+
+                var ast = parser.parse(code);                    
+                $("#txtResult").text(JSON.stringify(ast)); 
+                
+                var res = analyzeAST(ast);
+                $("#txtTS").text(JSON.stringify(res.ts.symbols));
+                $("#txtErrs").text(JSON.stringify(res.errs));
+                                    
+                if (res.errs.length > 0){                            
+                    $("#alertFail").fadeTo(2000, 500).slideUp(1000, function(){
+                        $("#alertFail").slideUp(500);
+                    });
+                    $("#alertSuccess").hide();
+
+                    
+                }else{
+                    $("#alertSuccess").fadeTo(2000, 500).slideUp(1000, function(){
+                        $("#alertSuccess").slideUp(500);
+                    });
+                    $("#alertFail").hide();
+                                        
+                    run(res.ts, consoleOutput);                        
+                }
+
                 
                 try{                       
-                    var ast = parser.parse(code);                    
-                    $("#txtResult").text(JSON.stringify(ast)); 
-                    
-                    var res = analyzeAST(ast);
-                    $("#txtTS").text(JSON.stringify(res.ts.symbols));
-                    $("#txtErrs").text(JSON.stringify(res.errs));
                                         
-                    if (res.errs.length > 0){                        
-                        $("#alertFail").fadeTo(2000, 500).slideUp(1000, function(){
-                            $("#alertFail").slideUp(500);
-                        });
-                        $("#alertSuccess").hide();
-                    }else{
-                        $("#alertSuccess").fadeTo(2000, 500).slideUp(1000, function(){
-                            $("#alertSuccess").slideUp(500);
-                        });
-                        $("#alertFail").hide();
-                    }
-                    
                     
                 }catch(ex){
                     $("#txtResult").text(ex);
+                    console.trace();
                 }                
             }
+
+            function consoleOutput(msj){
+                $("#txtConsole").append('[' + (new Date().toLocaleString()) + '] ' + msj + '\n');
+            }
+
+            function clearConsole(){
+                $("#txtConsole").val("");
+            }
+
+            $(function(){
+                $("#txtCode").text('int main(){\n\treturn 0;\n}');
+            });
         </script>
     </head>
 
@@ -66,6 +87,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <button class="btn btn-primary" onclick="compile()">Compile</button>
+                    <button class="btn btn-primary" onclick="clearConsole()">Clear Console</button>
                     <a href="http://json.parser.online.fr/" target="_blank" class="btn btn-link">JSON Parser</a>
                     <hr>
 
@@ -93,11 +115,19 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <textarea id="txtCode" rows="30" cols="100" class="form-control"></textarea>
+                    <p><strong>High Level Code</strong></p>
+                    <textarea id="txtCode" rows="30" cols="100" class="form-control">
+                    </textarea>
                 </div>
             
-                <div class="col-md-6">
+                <div class="col-md-3">
+                    <p><strong>AST</strong></p>
                     <textarea id="txtResult" rows="30" cols="100" class="form-control"></textarea>
+                </div>
+
+                <div class="col-md-3">
+                    <p><strong>Console output</strong></p>
+                    <textarea id="txtConsole" rows="30" cols="100" class="form-control"></textarea>
                 </div>
             </div>
 
