@@ -94,6 +94,8 @@ SENT :
 |   WHILE {{ $$ = $1 }}
 |   RETURN ptoComa {{ $$ = $1 }}
 |   CALL ptoComa {{ $$ = $1 }}
+|   romper ptoComa {{ $$ = {'type': 'break'} }}
+|   continuar ptoComa {{ $$ = {'type': 'continue'} }}
 |   error ptoComa {{       
         $$ = { type: 'error', msj: 'Syntax error', line: @1.first_line, column: @1.first_column };        
     }}
@@ -126,7 +128,7 @@ ARGS :
 
 RETURN :
     retornar E {{
-        $$ = { type: 'return', size: 1, children: [$2] }
+        $$ = { type: 'return', size: 0, children: [$2] }
     }}
 |   retornar {{
         $$ = { type: 'return', size: 0 }

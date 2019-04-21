@@ -24,7 +24,7 @@
             function compile(){
                 $("#txtConsole").text("");
                 var code = $("#txtCode").val();
-
+                localStorage.setItem('code', code);
                 var ast = parser.parse(code);                    
                 $("#txtResult").text(JSON.stringify(ast)); 
                 
@@ -67,7 +67,12 @@
             }
 
             $(function(){
-                $("#txtCode").text('int main(){\n\treturn 0;\n}');
+                let code = localStorage.getItem('code');
+                
+                if (code)
+                    $("#txtCode").text(code);
+                else
+                    $("#txtCode").text('int main(){\n\treturn 0;\n}');
             });
         </script>
     </head>

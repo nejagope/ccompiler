@@ -16,8 +16,7 @@ function analyzeAST(ast){
                     && ( symbol.type == 'param' && (newSymbol.type == 'param' || newSymbol.type == 'var') || symbol.type == newSymbol.type)
                     && !(symbol.ambito == 'global' && newSymbol.type == 'var')            
                     ){
-                        symbolExists = true;
-                        return false;
+                        symbolExists = true;                        
                 }        
             });
 
@@ -46,12 +45,33 @@ function analyzeAST(ast){
             });
             return symbolFound;
         },
+
+        addVarOrParam: function (newSymbol){
+            let symbol = this.findVarOrParam(newSymbol.id, newSymbol.ambito);
+            
+            if (!symbol){               
+                this.symbols.push(newSymbol);
+            }
+        },
         
-        findVarOrParam: function (id){
+        findVarOrParam: function (id, ambito){
             let symbolFound = null;
             
             this.symbols.forEach(function(symbol){
-                if (symbol.id == id && (symbol.type == 'var' || symbol.type == 'param')) {
+                if (symbol.id == id 
+                        && (symbol.type == 'var' || symbol.type == 'param')
+                        && (symbol.ambito == ambito)) {
+                    symbolFound = symbol;                
+                }        
+            });
+            return symbolFound;
+        },
+
+        findMethod: function (id, cantParams){
+            let symbolFound = null;
+            
+            this.symbols.forEach(function(symbol){
+                if (symbol.id == id && symbol.type == 'metodo' && symbol.size == cantParams) {
                     symbolFound = symbol;                
                 }        
             });
@@ -67,6 +87,12 @@ function analyzeAST(ast){
                 }        
             });
             return symbolsFound;
+        },
+
+        cout: function(){
+            this.symbols.forEach(function(symbol){
+                 console.log( symbol.type + ' ' + symbol.id + ' ' + symbol.ambito + ' ' + symbol.position);
+            });            
         }
     }; 
     
@@ -118,8 +144,10 @@ function analyze(ast, ts, errs, ambito){
                 data_type: ast.return_type.val,                    
                 size: ast.size,
                 ambito: ambito,
-                body: ast.body
+                body: ast.body,                
             };
+            if (ast.params)
+                symbol.params = ast.params
             
             ts.add(symbol, errs);
             
