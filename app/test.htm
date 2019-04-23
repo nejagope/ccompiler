@@ -66,14 +66,49 @@
                 $("#txtConsole").val("");
             }
 
+            function stepAction(msj){
+                               
+            }
+            
+            function listPushItem(item){
+                $("#listStack").prepend('<li class="list-group-item">'+ item +'</li>');                             
+            }
+
+            function listPopItem(){
+                $("#listStack li").first().remove();      
+            }
+
+            function listSetActiveItem(itemNumber){
+                if (itemNumber != null){
+                    $("#listStack li.active").removeClass('active');
+                    $("#listStack li").eq(itemNumber).addClass("active");
+                }
+            }
+
+            function showObject(obj, alert) {
+                var result = "";
+                for (var p in obj) {
+                    if( obj.hasOwnProperty(p) ) {
+                    result += p + " , " + obj[p] + "\n";
+                    } 
+                } 
+                if (alert)
+                    alert(result);             
+                return result;
+            }
+
             $(function(){
                 let code = localStorage.getItem('code');
                 
                 if (code)
                     $("#txtCode").text(code);
                 else
-                    $("#txtCode").text('int main(){\n\treturn 0;\n}');
+                    $("#txtCode").text('int main(){\n\treturn 0;\n}'); 
+
+                $("#alertSuccess").hide();
+                $("#alertFail").hide();                
             });
+            
         </script>
     </head>
 
@@ -91,9 +126,11 @@
 
             <div class="row">
                 <div class="col-md-12">
+
                     <button class="btn btn-primary" onclick="compile()">Compile</button>
                     <button class="btn btn-primary" onclick="clearConsole()">Clear Console</button>
                     <a href="http://json.parser.online.fr/" target="_blank" class="btn btn-link">JSON Parser</a>
+                    
                     <hr>
 
                     <div class="alert alert-success alert-dismissible" role="alert" id="alertSuccess"  data-dismiss="alert" aria-hidden="true">                        
@@ -108,12 +145,7 @@
                             Failed!
                         </h6>
                         <p>Compiled with <a href="#txtErrs" class="alert-link">errors</a></p>                           
-                    </div>
-
-                    <script>
-                            $("#alertSuccess").hide();
-                            $("#alertFail").hide();
-                    </script>
+                    </div>                    
 
                 </div>
             </div>
@@ -121,31 +153,55 @@
             <div class="row">
                 <div class="col-md-6">
                     <p><strong>High Level Code</strong></p>
-                    <textarea id="txtCode" rows="30" cols="100" class="form-control">
+                    <textarea id="txtCode" rows="10" cols="100" class="form-control">
                     </textarea>
                 </div>
             
                 <div class="col-md-3">
                     <p><strong>AST</strong></p>
-                    <textarea id="txtResult" rows="30" cols="100" class="form-control"></textarea>
+                    <textarea id="txtResult" rows="10" cols="100" class="form-control"></textarea>
                 </div>
 
                 <div class="col-md-3">
                     <p><strong>Console output</strong></p>
-                    <textarea id="txtConsole" rows="30" cols="100" class="form-control"></textarea>
+                    <textarea id="txtConsole" rows="10" cols="100" class="form-control"></textarea>
                 </div>
             </div>
 
             <div class="row">
+                <div class="col-md-6">
+                    <hr>
+                    <p><strong>Stack</strong></p>
+
+                    <ul class="list-group" id="listStack">
+                    
+                    </ul>
+                    <hr>
+                </div>            
+
+                <div class="col-md-6">
+                    <hr>
+                    <p><strong>Heap</strong></p>
+
+                    <ul class="list-group" id="listHeap">                        
+                    </ul>
+                    <hr>
+                </div>  
+
+            </div>
+
+
+
+            <div class="row">
                 <div class="col-md-12">
-                    <h3>Symbols</h3>
+                    <p><strong>Symbols</strong></p>
                     <textarea id="txtTS" rows="10" cols="200" class="form-control"></textarea>
                 </div>            
             </div>
 
             <div class="row">
                 <div class="col-md-12">
-                    <h3>Errors</h3>
+                    <p><strong>Errors</strong></p>
                     <textarea id="txtErrs" rows="10" cols="200" class="form-control"></textarea>
                 </div>            
             </div>
