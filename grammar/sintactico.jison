@@ -41,7 +41,7 @@ STATEMENTS :
             size = $1.size;
         else
             size = 0;
-        $$ = { type: 'stmnts', size: size, children: [$1] } 
+        $$ = { type: 'stmnts', size: size, children: [$1], line: @1.first_line, column: @1.first_column } 
     }}
 ;
 
@@ -61,7 +61,7 @@ BLOQUE_SENTS :
         $$ = $1;        
     }}
 |   SENT {{  
-        $$ = { type: 'sents', size: $1.size, children: [$1] } 
+        $$ = { type: 'sents', size: $1.size, children: [$1], line: @1.first_line, column: @1.first_column } 
     }}
 ;
 
@@ -70,7 +70,7 @@ BLOQUE_DELIMITADO :
         $$ = $2;        
     }}
 |   llaveA llaveC {{  
-        $$ = { type: 'sents', size: 0 } 
+        $$ = { type: 'sents', size: 0, line: @1.first_line, column: @1.first_column } 
     }}
 ;
 
@@ -84,7 +84,7 @@ SENTS :
             $$.size += $2.size;
         }}
     | SENT
-        {{  $$ = { type: 'sents', size: $1.size, children: [$1] } }}
+        {{  $$ = { type: 'sents', size: $1.size, children: [$1], line: @1.first_line, column: @1.first_column } }}
 ;
 
 SENT : 
@@ -106,10 +106,10 @@ SENT :
 
 CALL :
     ID parenA ARGS parenC {{
-        $$ = { type: 'call', size: 0, id: $1, args:$3}
+        $$ = { type: 'call', size: 0, id: $1, args:$3, line: @1.first_line, column: @1.first_column}
     }}
 |   ID parenA parenC {{
-        $$ = { type: 'call', size: 0, id: $1}
+        $$ = { type: 'call', size: 0, id: $1, line: @1.first_line, column: @1.first_column }
     }}
 ;
 
@@ -122,31 +122,31 @@ ARGS :
         $$.size = $1.size + 1;
     }}
 |   E {{
-        $$ = { type: 'args', size: 1, children: [$1] }
+        $$ = { type: 'args', size: 1, children: [$1], line: @1.first_line, column: @1.first_column }
     }} 
 ;
 
 RETURN :
     retornar E {{
-        $$ = { type: 'return', size: 0, children: [$2] }
+        $$ = { type: 'return', size: 0, children: [$2], line: @1.first_line, column: @1.first_column }
     }}
 |   retornar {{
-        $$ = { type: 'return', size: 0 }
+        $$ = { type: 'return', size: 0, line: @1.first_line, column: @1.first_column }
     }}
 ;
 
 METODO:
     TIPO ID parenA PARAMS parenC BLOQUE_DELIMITADO {{  
-        $$ = { type: 'metodo', return_type: $1, id: $2, size: $4.size, params: $4, body:$6 }         
+        $$ = { type: 'metodo', return_type: $1, id: $2, size: $4.size, params: $4, body:$6, line: @1.first_line, column: @1.first_column }         
     }}
 |   TIPO ID parenA parenC BLOQUE_DELIMITADO {{  
-        $$ = { type: 'metodo', return_type: $1, id: $2, size: 0, body:$5 }                
+        $$ = { type: 'metodo', return_type: $1, id: $2, size: 0, body:$5, line: @1.first_line, column: @1.first_column }                
     }}
 |   void ID parenA PARAMS parenC BLOQUE_DELIMITADO {{  
-        $$ = { type: 'metodo', id: $2, return_type: { type: 'tipo', val: 'void' }, size: $4.size, params: $4, body:$6 }         
+        $$ = { type: 'metodo', id: $2, return_type: { type: 'tipo', val: 'void' }, size: $4.size, params: $4, body:$6 , line: @1.first_line, column: @1.first_column}         
     }}
 |   void ID parenA parenC BLOQUE_DELIMITADO {{          
-        $$ = { type: 'metodo', id: $2, return_type: { type: 'tipo', val: 'void' }, size: 0, body:$5 }                
+        $$ = { type: 'metodo', id: $2, return_type: { type: 'tipo', val: 'void' }, size: 0, body:$5, line: @1.first_line, column: @1.first_column }                
     }}
 ;
 
@@ -159,27 +159,27 @@ PARAMS:
         $$.size = $1.size + 1;
     }}
 |   PARAM {{
-        $$ = { type: 'params', size: 1, children: [$1] }
+        $$ = { type: 'params', size: 1, children: [$1], line: @1.first_line, column: @1.first_column }
     }} 
 ;
 
 PARAM:
-    TIPO ID {{  $$ = { type: 'param', data_type: $1, id: $2 } }}
+    TIPO ID {{  $$ = { type: 'param', data_type: $1, id: $2, line: @1.first_line, column: @1.first_column } }}
 ;
 
 
 WHILE :
     mientras parenA E parenC BLOQUE_SENTS {{
-        $$ = { type:'while', size: 0, cond: $3, body: $5 }
+        $$ = { type:'while', size: 0, cond: $3, body: $5, line: @1.first_line, column: @1.first_column }
     }}
 ;
 
 IF: 
     si parenA E parenC BLOQUE_SENTS %prec THEN {{
-        $$ = { type:'if', size: 0, cond: $3, body: $5 }
+        $$ = { type:'if', size: 0, cond: $3, body: $5, line: @1.first_line, column: @1.first_column }
     }}
 |   si parenA E parenC BLOQUE_SENTS sino BLOQUE_SENTS {{
-        $$ = { type:'if', size: 0, cond: $3, body: $5, body_else: $7 }
+        $$ = { type:'if', size: 0, cond: $3, body: $5, body_else: $7, line: @1.first_line, column: @1.first_column }
     }}
     
 ;
@@ -193,7 +193,7 @@ DECL :
         $$.size = $1.size + 1;
     }}
 |   TIPO DECL_SUBJECT {{
-        $$ = { type: 'dcl', data_type: $1, size: 1, children: [$2] }
+        $$ = { type: 'dcl', data_type: $1, size: 1, children: [$2], line: @1.first_line, column: @1.first_column }
     }} 
 ;
 
@@ -207,19 +207,19 @@ DECL_SUBJECT :
 ;
 
 TIPO : entero  {{
-        $$ = { type: 'tipo', val: 'int' }
+        $$ = { type: 'tipo', val: 'int', line: @1.first_line, column: @1.first_column }
     }}
     | float  {{
-        $$ = { type: 'tipo', val: 'float' }
+        $$ = { type: 'tipo', val: 'float', line: @1.first_line, column: @1.first_column }
     }}
     | booleano  {{
-        $$ = { type: 'tipo', val: 'bool' }
+        $$ = { type: 'tipo', val: 'bool', line: @1.first_line, column: @1.first_column }
     }}
 ;
 
 ASIGNACION_ID :
     ID asigna E {{
-        $$ = { type: '=', size: 0, children: [$1, $3] }
+        $$ = { type: '=', size: 0, children: [$1, $3], line: @2.first_line, column: @2.first_column }
     }}
 ;
 
@@ -229,75 +229,75 @@ ASIGNACION :
     }} 
 ;
 
-ID : id {{  $$ = { type: 'id', val: $1 } }} ;
+ID : id {{  $$ = { type: 'id', val: $1, line: @1.first_line, column: @1.first_column } }} ;
 
 E
     : E and E {{                       
-            $$ = { type: '&&', children: [$1, $3] } 
+            $$ = { type: '&&', children: [$1, $3], line: @2.first_line, column: @2.first_column } 
         }}
     | E or E {{                       
-            $$ = { type: '||', children: [$1, $3] } 
+            $$ = { type: '||', children: [$1, $3], line: @2.first_line, column: @2.first_column } 
         }}
     | E menorI E {{                       
-            $$ = { type: '<=', children: [$1, $3] } 
+            $$ = { type: '<=', children: [$1, $3], line: @2.first_line, column: @2.first_column } 
         }}
     | E mayorI E {{                       
-            $$ = { type: '>=', children: [$1, $3] } 
+            $$ = { type: '>=', children: [$1, $3], line: @2.first_line, column: @2.first_column } 
         }}
     | E menor E {{                       
-            $$ = { type: '<', children: [$1, $3] } 
+            $$ = { type: '<', children: [$1, $3], line: @2.first_line, column: @2.first_column } 
         }}
     | E mayor E {{                       
-            $$ = { type: '>', children: [$1, $3] } 
+            $$ = { type: '>', children: [$1, $3], line: @2.first_line, column: @2.first_column } 
         }}
     | E noIgual E {{                       
-            $$ = { type: '!=', children: [$1, $3] } 
+            $$ = { type: '!=', children: [$1, $3], line: @2.first_line, column: @2.first_column } 
         }}
     | E igual E {{                       
-            $$ = { type: '==', children: [$1, $3] } 
+            $$ = { type: '==', children: [$1, $3], line: @2.first_line, column: @2.first_column } 
         }}
     | E mas E
         {{                       
-            $$ = { type: '+', children: [$1, $3] } 
+            $$ = { type: '+', children: [$1, $3], line: @2.first_line, column: @2.first_column } 
         }}
     | E menos E {{                       
-            $$ = { type: '-', children: [$1, $3] } 
+            $$ = { type: '-', children: [$1, $3], line: @2.first_line, column: @2.first_column } 
         }}
     | E por E{{                       
-            $$ = { type: '*', children: [$1, $3] } 
+            $$ = { type: '*', children: [$1, $3], line: @2.first_line, column: @2.first_column } 
         }}
     | E div E {{                       
-            $$ = { type: '/', children: [$1, $3] } 
+            $$ = { type: '/', children: [$1, $3], line: @2.first_line, column: @2.first_column } 
         }}
     | E mod E {{                       
-            $$ = { type: '%', children: [$1, $3] } 
+            $$ = { type: '%', children: [$1, $3], line: @2.first_line, column: @2.first_column } 
         }}
     | E pow E {{                       
-            $$ = { type: '^', children: [$1, $3] } 
+            $$ = { type: '^', children: [$1, $3], line: @2.first_line, column: @2.first_column } 
         }}
     | menos E %prec UMINUS {{                       
-            $$ = { type: '(-)', children: [$2] } 
+            $$ = { type: '(-)', children: [$2], line: @1.first_line, column: @1.first_column } 
         }}
     | not E %prec NOT {{                       
-            $$ = { type: '!', children: [$2] } 
+            $$ = { type: '!', children: [$2], line: @1.first_line, column: @1.first_column } 
         }}
     | parenA E parenC
         {{ $$ = $2; }}
     | boolLit   {{ 
             valor = yytext.toLowerCase() == 'true'; 
-            $$ = { type: 'boolLit', val: valor } 
+            $$ = { type: 'boolLit', val: valor, line: @1.first_line, column: @1.first_column } 
         }}
     | intLit {{ 
             valor = parseInt(yytext);
-            $$ = { type: 'intLit', val: valor } 
+            $$ = { type: 'intLit', val: valor, line: @1.first_line, column: @1.first_column } 
         }}
     | floatLit {{ 
             valor = parseFloat(yytext);
-            $$ = { type: 'floatLit', val: valor} 
+            $$ = { type: 'floatLit', val: valor, line: @1.first_line, column: @1.first_column } 
         }}
     | stringLit {{ 
             valor = yytext;
-            $$ = { type: 'stringLit', val: valor } 
+            $$ = { type: 'stringLit', val: valor, line: @1.first_line, column: @1.first_column } 
         }}
     | ID {{             
             $$ = $1; 

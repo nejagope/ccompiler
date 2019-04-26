@@ -106,7 +106,7 @@ case 3:
             size = $$[$0].size;
         else
             size = 0;
-        this.$ = { type: 'stmnts', size: size, children: [$$[$0]] } 
+        this.$ = { type: 'stmnts', size: size, children: [$$[$0]], line: _$[$0].first_line, column: _$[$0].first_column } 
     
 break;
 case 4: case 15:
@@ -127,7 +127,7 @@ case 8: case 48:
 break;
 case 9:
   
-        this.$ = { type: 'sents', size: $$[$0].size, children: [$$[$0]] } 
+        this.$ = { type: 'sents', size: $$[$0].size, children: [$$[$0]], line: _$[$0].first_line, column: _$[$0].first_column } 
     
 break;
 case 10:
@@ -137,7 +137,7 @@ case 10:
 break;
 case 11:
   
-        this.$ = { type: 'sents', size: 0 } 
+        this.$ = { type: 'sents', size: 0, line: _$[$0-1].first_line, column: _$[$0-1].first_column } 
     
 break;
 case 12:
@@ -150,7 +150,7 @@ case 12:
         
 break;
 case 13:
-  this.$ = { type: 'sents', size: $$[$0].size, children: [$$[$0]] } 
+  this.$ = { type: 'sents', size: $$[$0].size, children: [$$[$0]], line: _$[$0].first_line, column: _$[$0].first_column } 
 break;
 case 14: case 18: case 19:
  this.$ = $$[$0-1] 
@@ -163,12 +163,12 @@ case 21:
 break;
 case 24:
 
-        this.$ = { type: 'call', size: 0, id: $$[$0-3], args:$$[$0-1]}
+        this.$ = { type: 'call', size: 0, id: $$[$0-3], args:$$[$0-1], line: _$[$0-3].first_line, column: _$[$0-3].first_column}
     
 break;
 case 25:
 
-        this.$ = { type: 'call', size: 0, id: $$[$0-2]}
+        this.$ = { type: 'call', size: 0, id: $$[$0-2], line: _$[$0-2].first_line, column: _$[$0-2].first_column }
     
 break;
 case 26: case 34: case 40:
@@ -182,65 +182,65 @@ case 26: case 34: case 40:
 break;
 case 27:
 
-        this.$ = { type: 'args', size: 1, children: [$$[$0]] }
+        this.$ = { type: 'args', size: 1, children: [$$[$0]], line: _$[$0].first_line, column: _$[$0].first_column }
     
 break;
 case 28:
 
-        this.$ = { type: 'return', size: 0, children: [$$[$0]] }
+        this.$ = { type: 'return', size: 0, children: [$$[$0]], line: _$[$0-1].first_line, column: _$[$0-1].first_column }
     
 break;
 case 29:
 
-        this.$ = { type: 'return', size: 0 }
+        this.$ = { type: 'return', size: 0, line: _$[$0].first_line, column: _$[$0].first_column }
     
 break;
 case 30:
   
-        this.$ = { type: 'metodo', return_type: $$[$0-5], id: $$[$0-4], size: $$[$0-2].size, params: $$[$0-2], body:$$[$0] }         
+        this.$ = { type: 'metodo', return_type: $$[$0-5], id: $$[$0-4], size: $$[$0-2].size, params: $$[$0-2], body:$$[$0], line: _$[$0-5].first_line, column: _$[$0-5].first_column }         
     
 break;
 case 31:
   
-        this.$ = { type: 'metodo', return_type: $$[$0-4], id: $$[$0-3], size: 0, body:$$[$0] }                
+        this.$ = { type: 'metodo', return_type: $$[$0-4], id: $$[$0-3], size: 0, body:$$[$0], line: _$[$0-4].first_line, column: _$[$0-4].first_column }                
     
 break;
 case 32:
   
-        this.$ = { type: 'metodo', id: $$[$0-4], return_type: { type: 'tipo', val: 'void' }, size: $$[$0-2].size, params: $$[$0-2], body:$$[$0] }         
+        this.$ = { type: 'metodo', id: $$[$0-4], return_type: { type: 'tipo', val: 'void' }, size: $$[$0-2].size, params: $$[$0-2], body:$$[$0] , line: _$[$0-5].first_line, column: _$[$0-5].first_column}         
     
 break;
 case 33:
           
-        this.$ = { type: 'metodo', id: $$[$0-3], return_type: { type: 'tipo', val: 'void' }, size: 0, body:$$[$0] }                
+        this.$ = { type: 'metodo', id: $$[$0-3], return_type: { type: 'tipo', val: 'void' }, size: 0, body:$$[$0], line: _$[$0-4].first_line, column: _$[$0-4].first_column }                
     
 break;
 case 35:
 
-        this.$ = { type: 'params', size: 1, children: [$$[$0]] }
+        this.$ = { type: 'params', size: 1, children: [$$[$0]], line: _$[$0].first_line, column: _$[$0].first_column }
     
 break;
 case 36:
-  this.$ = { type: 'param', data_type: $$[$0-1], id: $$[$0] } 
+  this.$ = { type: 'param', data_type: $$[$0-1], id: $$[$0], line: _$[$0-1].first_line, column: _$[$0-1].first_column } 
 break;
 case 37:
 
-        this.$ = { type:'while', size: 0, cond: $$[$0-2], body: $$[$0] }
+        this.$ = { type:'while', size: 0, cond: $$[$0-2], body: $$[$0], line: _$[$0-4].first_line, column: _$[$0-4].first_column }
     
 break;
 case 38:
 
-        this.$ = { type:'if', size: 0, cond: $$[$0-2], body: $$[$0] }
+        this.$ = { type:'if', size: 0, cond: $$[$0-2], body: $$[$0], line: _$[$0-4].first_line, column: _$[$0-4].first_column }
     
 break;
 case 39:
 
-        this.$ = { type:'if', size: 0, cond: $$[$0-4], body: $$[$0-2], body_else: $$[$0] }
+        this.$ = { type:'if', size: 0, cond: $$[$0-4], body: $$[$0-2], body_else: $$[$0], line: _$[$0-6].first_line, column: _$[$0-6].first_column }
     
 break;
 case 41:
 
-        this.$ = { type: 'dcl', data_type: $$[$0-1], size: 1, children: [$$[$0]] }
+        this.$ = { type: 'dcl', data_type: $$[$0-1], size: 1, children: [$$[$0]], line: _$[$0-1].first_line, column: _$[$0-1].first_column }
     
 break;
 case 42: case 43:
@@ -250,105 +250,105 @@ case 42: case 43:
 break;
 case 44:
 
-        this.$ = { type: 'tipo', val: 'int' }
+        this.$ = { type: 'tipo', val: 'int', line: _$[$0].first_line, column: _$[$0].first_column }
     
 break;
 case 45:
 
-        this.$ = { type: 'tipo', val: 'float' }
+        this.$ = { type: 'tipo', val: 'float', line: _$[$0].first_line, column: _$[$0].first_column }
     
 break;
 case 46:
 
-        this.$ = { type: 'tipo', val: 'bool' }
+        this.$ = { type: 'tipo', val: 'bool', line: _$[$0].first_line, column: _$[$0].first_column }
     
 break;
 case 47:
 
-        this.$ = { type: '=', size: 0, children: [$$[$0-2], $$[$0]] }
+        this.$ = { type: '=', size: 0, children: [$$[$0-2], $$[$0]], line: _$[$0-1].first_line, column: _$[$0-1].first_column }
     
 break;
 case 49:
-  this.$ = { type: 'id', val: $$[$0] } 
+  this.$ = { type: 'id', val: $$[$0], line: _$[$0].first_line, column: _$[$0].first_column } 
 break;
 case 50:
                        
-            this.$ = { type: '&&', children: [$$[$0-2], $$[$0]] } 
+            this.$ = { type: '&&', children: [$$[$0-2], $$[$0]], line: _$[$0-1].first_line, column: _$[$0-1].first_column } 
         
 break;
 case 51:
                        
-            this.$ = { type: '||', children: [$$[$0-2], $$[$0]] } 
+            this.$ = { type: '||', children: [$$[$0-2], $$[$0]], line: _$[$0-1].first_line, column: _$[$0-1].first_column } 
         
 break;
 case 52:
                        
-            this.$ = { type: '<=', children: [$$[$0-2], $$[$0]] } 
+            this.$ = { type: '<=', children: [$$[$0-2], $$[$0]], line: _$[$0-1].first_line, column: _$[$0-1].first_column } 
         
 break;
 case 53:
                        
-            this.$ = { type: '>=', children: [$$[$0-2], $$[$0]] } 
+            this.$ = { type: '>=', children: [$$[$0-2], $$[$0]], line: _$[$0-1].first_line, column: _$[$0-1].first_column } 
         
 break;
 case 54:
                        
-            this.$ = { type: '<', children: [$$[$0-2], $$[$0]] } 
+            this.$ = { type: '<', children: [$$[$0-2], $$[$0]], line: _$[$0-1].first_line, column: _$[$0-1].first_column } 
         
 break;
 case 55:
                        
-            this.$ = { type: '>', children: [$$[$0-2], $$[$0]] } 
+            this.$ = { type: '>', children: [$$[$0-2], $$[$0]], line: _$[$0-1].first_line, column: _$[$0-1].first_column } 
         
 break;
 case 56:
                        
-            this.$ = { type: '!=', children: [$$[$0-2], $$[$0]] } 
+            this.$ = { type: '!=', children: [$$[$0-2], $$[$0]], line: _$[$0-1].first_line, column: _$[$0-1].first_column } 
         
 break;
 case 57:
                        
-            this.$ = { type: '==', children: [$$[$0-2], $$[$0]] } 
+            this.$ = { type: '==', children: [$$[$0-2], $$[$0]], line: _$[$0-1].first_line, column: _$[$0-1].first_column } 
         
 break;
 case 58:
                        
-            this.$ = { type: '+', children: [$$[$0-2], $$[$0]] } 
+            this.$ = { type: '+', children: [$$[$0-2], $$[$0]], line: _$[$0-1].first_line, column: _$[$0-1].first_column } 
         
 break;
 case 59:
                        
-            this.$ = { type: '-', children: [$$[$0-2], $$[$0]] } 
+            this.$ = { type: '-', children: [$$[$0-2], $$[$0]], line: _$[$0-1].first_line, column: _$[$0-1].first_column } 
         
 break;
 case 60:
                        
-            this.$ = { type: '*', children: [$$[$0-2], $$[$0]] } 
+            this.$ = { type: '*', children: [$$[$0-2], $$[$0]], line: _$[$0-1].first_line, column: _$[$0-1].first_column } 
         
 break;
 case 61:
                        
-            this.$ = { type: '/', children: [$$[$0-2], $$[$0]] } 
+            this.$ = { type: '/', children: [$$[$0-2], $$[$0]], line: _$[$0-1].first_line, column: _$[$0-1].first_column } 
         
 break;
 case 62:
                        
-            this.$ = { type: '%', children: [$$[$0-2], $$[$0]] } 
+            this.$ = { type: '%', children: [$$[$0-2], $$[$0]], line: _$[$0-1].first_line, column: _$[$0-1].first_column } 
         
 break;
 case 63:
                        
-            this.$ = { type: '^', children: [$$[$0-2], $$[$0]] } 
+            this.$ = { type: '^', children: [$$[$0-2], $$[$0]], line: _$[$0-1].first_line, column: _$[$0-1].first_column } 
         
 break;
 case 64:
                        
-            this.$ = { type: '(-)', children: [$$[$0]] } 
+            this.$ = { type: '(-)', children: [$$[$0]], line: _$[$0-1].first_line, column: _$[$0-1].first_column } 
         
 break;
 case 65:
                        
-            this.$ = { type: '!', children: [$$[$0]] } 
+            this.$ = { type: '!', children: [$$[$0]], line: _$[$0-1].first_line, column: _$[$0-1].first_column } 
         
 break;
 case 66:
@@ -357,25 +357,25 @@ break;
 case 67:
  
             valor = yytext.toLowerCase() == 'true'; 
-            this.$ = { type: 'boolLit', val: valor } 
+            this.$ = { type: 'boolLit', val: valor, line: _$[$0].first_line, column: _$[$0].first_column } 
         
 break;
 case 68:
  
             valor = parseInt(yytext);
-            this.$ = { type: 'intLit', val: valor } 
+            this.$ = { type: 'intLit', val: valor, line: _$[$0].first_line, column: _$[$0].first_column } 
         
 break;
 case 69:
  
             valor = parseFloat(yytext);
-            this.$ = { type: 'floatLit', val: valor} 
+            this.$ = { type: 'floatLit', val: valor, line: _$[$0].first_line, column: _$[$0].first_column } 
         
 break;
 case 70:
  
             valor = yytext;
-            this.$ = { type: 'stringLit', val: valor } 
+            this.$ = { type: 'stringLit', val: valor, line: _$[$0].first_line, column: _$[$0].first_column } 
         
 break;
 case 71:
