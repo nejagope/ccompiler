@@ -106,10 +106,10 @@ SENT :
 
 CALL :
     ID parenA ARGS parenC {{
-        $$ = { type: 'call', size: 0, id: $1, args:$3, line: @1.first_line, column: @1.first_column}
+        $$ = { type: 'call', size: 0, children: [$1, $3], id: $1, args:$3, line: @1.first_line, column: @1.first_column}
     }}
 |   ID parenA parenC {{
-        $$ = { type: 'call', size: 0, id: $1, line: @1.first_line, column: @1.first_column }
+        $$ = { type: 'call', size: 0, children: [$1], id: $1, line: @1.first_line, column: @1.first_column }
     }}
 ;
 
@@ -137,16 +137,16 @@ RETURN :
 
 METODO:
     TIPO ID parenA PARAMS parenC BLOQUE_DELIMITADO {{  
-        $$ = { type: 'metodo', return_type: $1, id: $2, size: $4.size, params: $4, body:$6, line: @1.first_line, column: @1.first_column }         
+        $$ = { type: 'metodo', return_type: $1, id: $2, size: $4.size, children: [$1, $2, $4, $6], params: $4, body:$6, line: @1.first_line, column: @1.first_column }         
     }}
 |   TIPO ID parenA parenC BLOQUE_DELIMITADO {{  
-        $$ = { type: 'metodo', return_type: $1, id: $2, size: 0, body:$5, line: @1.first_line, column: @1.first_column }                
+        $$ = { type: 'metodo', return_type: $1, id: $2, size: 0, children: [$1, $2, $5], body:$5, line: @1.first_line, column: @1.first_column }                
     }}
 |   void ID parenA PARAMS parenC BLOQUE_DELIMITADO {{  
-        $$ = { type: 'metodo', id: $2, return_type: { type: 'tipo', val: 'void' }, size: $4.size, params: $4, body:$6 , line: @1.first_line, column: @1.first_column}         
+        $$ = { type: 'metodo', id: $2, return_type: { type: 'tipo', val: 'void' }, size: $4.size, children: [$2, $4, $6], params: $4, body:$6 , line: @1.first_line, column: @1.first_column}         
     }}
 |   void ID parenA parenC BLOQUE_DELIMITADO {{          
-        $$ = { type: 'metodo', id: $2, return_type: { type: 'tipo', val: 'void' }, size: 0, body:$5, line: @1.first_line, column: @1.first_column }                
+        $$ = { type: 'metodo', id: $2, return_type: { type: 'tipo', val: 'void' }, size: 0, children: [$2, $5], body:$5, line: @1.first_line, column: @1.first_column }                
     }}
 ;
 
@@ -170,16 +170,16 @@ PARAM:
 
 WHILE :
     mientras parenA E parenC BLOQUE_SENTS {{
-        $$ = { type:'while', size: 0, cond: $3, body: $5, line: @1.first_line, column: @1.first_column }
+        $$ = { type:'while', size: 0, children: [$3, $5], cond: $3, body: $5, line: @1.first_line, column: @1.first_column }
     }}
 ;
 
 IF: 
     si parenA E parenC BLOQUE_SENTS %prec THEN {{
-        $$ = { type:'if', size: 0, cond: $3, body: $5, line: @1.first_line, column: @1.first_column }
+        $$ = { type:'if', size: 0, children: [$3, $5],  cond: $3, body: $5, line: @1.first_line, column: @1.first_column }
     }}
 |   si parenA E parenC BLOQUE_SENTS sino BLOQUE_SENTS {{
-        $$ = { type:'if', size: 0, cond: $3, body: $5, body_else: $7, line: @1.first_line, column: @1.first_column }
+        $$ = { type:'if', size: 0, children: [$3, $5, $7], cond: $3, body: $5, body_else: $7, line: @1.first_line, column: @1.first_column }
     }}
     
 ;

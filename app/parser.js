@@ -163,12 +163,12 @@ case 21:
 break;
 case 24:
 
-        this.$ = { type: 'call', size: 0, id: $$[$0-3], args:$$[$0-1], line: _$[$0-3].first_line, column: _$[$0-3].first_column}
+        this.$ = { type: 'call', size: 0, children: [$$[$0-3], $$[$0-1]], id: $$[$0-3], args:$$[$0-1], line: _$[$0-3].first_line, column: _$[$0-3].first_column}
     
 break;
 case 25:
 
-        this.$ = { type: 'call', size: 0, id: $$[$0-2], line: _$[$0-2].first_line, column: _$[$0-2].first_column }
+        this.$ = { type: 'call', size: 0, children: [$$[$0-2]], id: $$[$0-2], line: _$[$0-2].first_line, column: _$[$0-2].first_column }
     
 break;
 case 26: case 34: case 40:
@@ -197,22 +197,22 @@ case 29:
 break;
 case 30:
   
-        this.$ = { type: 'metodo', return_type: $$[$0-5], id: $$[$0-4], size: $$[$0-2].size, params: $$[$0-2], body:$$[$0], line: _$[$0-5].first_line, column: _$[$0-5].first_column }         
+        this.$ = { type: 'metodo', return_type: $$[$0-5], id: $$[$0-4], size: $$[$0-2].size, children: [$$[$0-4], $$[$0-2], $$[$0]], params: $$[$0-2], body:$$[$0], line: _$[$0-5].first_line, column: _$[$0-5].first_column }         
     
 break;
 case 31:
   
-        this.$ = { type: 'metodo', return_type: $$[$0-4], id: $$[$0-3], size: 0, body:$$[$0], line: _$[$0-4].first_line, column: _$[$0-4].first_column }                
+        this.$ = { type: 'metodo', return_type: $$[$0-4], id: $$[$0-3], size: 0, children: [$$[$0-3], $$[$0]], body:$$[$0], line: _$[$0-4].first_line, column: _$[$0-4].first_column }                
     
 break;
 case 32:
   
-        this.$ = { type: 'metodo', id: $$[$0-4], return_type: { type: 'tipo', val: 'void' }, size: $$[$0-2].size, params: $$[$0-2], body:$$[$0] , line: _$[$0-5].first_line, column: _$[$0-5].first_column}         
+        this.$ = { type: 'metodo', id: $$[$0-4], return_type: { type: 'tipo', val: 'void' }, size: $$[$0-2].size, children: [$$[$0-4], $$[$0-2], $$[$0]], params: $$[$0-2], body:$$[$0] , line: _$[$0-5].first_line, column: _$[$0-5].first_column}         
     
 break;
 case 33:
           
-        this.$ = { type: 'metodo', id: $$[$0-3], return_type: { type: 'tipo', val: 'void' }, size: 0, body:$$[$0], line: _$[$0-4].first_line, column: _$[$0-4].first_column }                
+        this.$ = { type: 'metodo', id: $$[$0-3], return_type: { type: 'tipo', val: 'void' }, size: 0, children: [$$[$0-3], $$[$0]], body:$$[$0], line: _$[$0-4].first_line, column: _$[$0-4].first_column }                
     
 break;
 case 35:
@@ -225,17 +225,17 @@ case 36:
 break;
 case 37:
 
-        this.$ = { type:'while', size: 0, cond: $$[$0-2], body: $$[$0], line: _$[$0-4].first_line, column: _$[$0-4].first_column }
+        this.$ = { type:'while', size: 0, children: [$$[$0-2], $$[$0]], cond: $$[$0-2], body: $$[$0], line: _$[$0-4].first_line, column: _$[$0-4].first_column }
     
 break;
 case 38:
 
-        this.$ = { type:'if', size: 0, cond: $$[$0-2], body: $$[$0], line: _$[$0-4].first_line, column: _$[$0-4].first_column }
+        this.$ = { type:'if', size: 0, children: [$$[$0-2], $$[$0]],  cond: $$[$0-2], body: $$[$0], line: _$[$0-4].first_line, column: _$[$0-4].first_column }
     
 break;
 case 39:
 
-        this.$ = { type:'if', size: 0, cond: $$[$0-4], body: $$[$0-2], body_else: $$[$0], line: _$[$0-6].first_line, column: _$[$0-6].first_column }
+        this.$ = { type:'if', size: 0, children: [$$[$0-4], $$[$0-2], $$[$0]], cond: $$[$0-4], body: $$[$0-2], body_else: $$[$0], line: _$[$0-6].first_line, column: _$[$0-6].first_column }
     
 break;
 case 41:
