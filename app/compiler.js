@@ -5,20 +5,25 @@ function compile(ast, onAddSymbolSuccess, onAddSymbolError){
     let ts = new SymbolsTable();
 
     //assign ids to nodes
-    addNodeIDs(ast, 0);       
+    _node_id = 0;
+    addNodeIDs(ast);       
 
     //fill symbols table
-    fillSymbolsTable(ast, "", ts, errs, onAddSymbolSuccess, onAddSymbolError);
+    fillSymbolsTable(ast, "global", ts, errs, onAddSymbolSuccess, function(symbol){        
+        errs.push({error: 'Identificador ya declarado', line: symbol.line, column: symbol.column, id: symbol.id});
+    });
 
     return {ts: ts, errs: errs};
 }
 
 /** --------------Assign ids to ast nodes -------------- */
-function addNodeIDs(ast, i){
-    ast.nid = i++;
-        if (ast.children){
+var _node_id = 0;
+
+function addNodeIDs(ast){
+    ast.nid = _node_id++;
+    if (ast.children){
         ast.children.forEach(function(child){
-            addNodeIDs(child, i);
+            addNodeIDs(child);
         });
     }
 }
@@ -33,15 +38,31 @@ function SymbolsTable(){
         let addSymbol = true;
 
         if (checkExistence){
-            if (this.find(newSymbol) != null){
-                addSymbol = false;
+            let symbolFound = this.findSymbol(newSymbol);
+            if (symbolFound != null){
                 
-                if (onError)
+                if (symbolFound.rol == 'global_var'){
+                    addSymbol = newSymbol.context != symbolFound.context;
+                }
+                else if (symbolFound.type == 'metodo'){
+                    addSymbol = newSymbol.paramTypes != symbolFound.paramTypes;
+                }
+                else{
+                    addSymbol = false;
+                }                
+
+                if (!addSymbol && onError)
                     onError(newSymbol);
             }
         }
         
         if (addSymbol){
+            if (newSymbol.context == 'global' && newSymbol.type == 'var')
+                newSymbol.rol = 'global_var';
+
+            if (newSymbol.id == 'main' && newSymbol.type == 'metodo')
+                newSymbol.rol = 'main';
+
             this.symbols.push(newSymbol);
             if (onSuccess)
                 onSuccess(newSymbol);
@@ -76,7 +97,7 @@ function SymbolsTable(){
     };
 
     this.findSymbol = function(symbol){
-        return this.find(simbol.id, symbol.type, symbol.context);
+        return this.find(symbol.id, symbol.type, symbol.context);
     };
 
     this.find = function (symbolId, type, context){
@@ -91,8 +112,7 @@ function SymbolsTable(){
             {
                     symbolFound = symbol;
             }        
-        });
-        
+        });        
         return symbolFound;
     };
 
@@ -133,7 +153,9 @@ function fillSymbolsTable(ast, context, ts, errs, onAddSymbolSuccess, onAddSymbo
                     type: 'var',
                     rol: 'var',
                     data_type: this.data_type.val, 
-                    context: context
+                    context: context,
+                    line : dcl.line,
+                    column : dcl.column,
                 };                
                 ts.add(symbol, true, onAddSymbolSuccess, onAddSymbolError);
             }, ast);
@@ -148,22 +170,30 @@ function fillSymbolsTable(ast, context, ts, errs, onAddSymbolSuccess, onAddSymbo
                 size: ast.size,
                 context: context,
                 body: ast.body,     
-                rol: 'funcion',           
+                rol: 'metodo',    
+                line : ast.line,
+                column : ast.column,       
             };
-            if (ast.params)
-                symbol.params = ast.params
+            if (ast.params){
+                symbol.params = ast.params  
+                symbol.paramTypes = '';              
+            }
             
             ts.add(symbol, true, onAddSymbolSuccess, onAddSymbolError);
             
-            let metodoContext = context + '_' + symbol.id;
+            let metodoContext = context + '_' + ast.nid + '_' + symbol.id;
             
             if (ast.params){
                 if (ast.params.children){
                     //el contexto incluye los tipos de dato de los parámetros
                     ast.params.children.forEach(function(param, i){  
                         metodoContext += "-" + param.data_type.val;           
+                        symbol.paramTypes += "-" + param.data_type.val;
                     });
-                }                            
+
+                    symbol.bodyContext = metodoContext;
+                }     
+                                       
                 fillSymbolsTable(ast.params, metodoContext, ts, errs, onAddSymbolSuccess, onAddSymbolError);                
             }
             
@@ -179,7 +209,9 @@ function fillSymbolsTable(ast, context, ts, errs, onAddSymbolSuccess, onAddSymbo
                     data_type: param.data_type.val,                    
                     position: i,
                     context: context,
-                    rol: 'param'
+                    rol: 'param',
+                    line : param.line,
+                    column : param.column,
                 };                
                 ts.add(symbol, true, onAddSymbolSuccess, onAddSymbolError);
             }, ast);

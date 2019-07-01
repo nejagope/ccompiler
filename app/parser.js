@@ -197,12 +197,12 @@ case 29:
 break;
 case 30:
   
-        this.$ = { type: 'metodo', return_type: $$[$0-5], id: $$[$0-4], size: $$[$0-2].size, children: [$$[$0-4], $$[$0-2], $$[$0]], params: $$[$0-2], body:$$[$0], line: _$[$0-5].first_line, column: _$[$0-5].first_column }         
+        this.$ = { type: 'metodo', return_type: $$[$0-5], id: $$[$0-4], size: $$[$0-2].size, children: [$$[$0-5], $$[$0-4], $$[$0-2], $$[$0]], params: $$[$0-2], body:$$[$0], line: _$[$0-5].first_line, column: _$[$0-5].first_column }         
     
 break;
 case 31:
   
-        this.$ = { type: 'metodo', return_type: $$[$0-4], id: $$[$0-3], size: 0, children: [$$[$0-3], $$[$0]], body:$$[$0], line: _$[$0-4].first_line, column: _$[$0-4].first_column }                
+        this.$ = { type: 'metodo', return_type: $$[$0-4], id: $$[$0-3], size: 0, children: [$$[$0-4], $$[$0-3], $$[$0]], body:$$[$0], line: _$[$0-4].first_line, column: _$[$0-4].first_column }                
     
 break;
 case 32:

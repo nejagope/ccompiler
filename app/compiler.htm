@@ -23,6 +23,7 @@
 
             function compileCode(){
                 $("#txtConsole").text("");
+                $("#txtTS").text("");
                 var code = $("#txtCode").val();
                 localStorage.setItem('code', code);
                 
@@ -30,7 +31,7 @@
                 var res = compile(ast, onAddSymbolTSSuccess);
                 
                 $("#txtResult").text(JSON.stringify(ast)); 
-                $("#txtTS").text(JSON.stringify(res.ts.symbols));
+                //$("#txtTS").text(JSON.stringify(res.ts.symbols));
                 $("#txtErrs").text(JSON.stringify(res.errs));
                                     
                 if (res.errs.length > 0){                            
@@ -49,7 +50,7 @@
             }
 
             function onAddSymbolTSSuccess(symbol){
-                consoleOutput(symbol.id);
+                $("#txtTS").append('id: ' + symbol.id + ', type: ' + symbol.type + ", rol: " + symbol.rol + ", context: " + symbol.context + '\n');
             }
 
             function consoleOutput(msj){
@@ -147,44 +148,32 @@
             <div class="row">
                 <div class="col-md-6">
                     <p><strong>High Level Code</strong></p>
-                    <textarea id="txtCode" rows="10" cols="100" class="form-control">
+                    <textarea id="txtCode" rows="20" cols="100" class="form-control">
                     </textarea>
                 </div>
             
                 <div class="col-md-3">
-                    <p><strong>AST</strong></p>
-                    <textarea id="txtResult" rows="10" cols="100" class="form-control"></textarea>
-                </div>
-
-                <div class="col-md-3">
-                    <p><strong>Console output</strong></p>
-                    <textarea id="txtConsole" rows="10" cols="100" class="form-control"></textarea>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <hr>
                     <p><strong>Stack</strong></p>
 
                     <ul class="list-group" id="listStack">
                     
-                    </ul>
-                    <hr>
-                </div>            
+                    </ul>                    
+                </div>
 
-                <div class="col-md-6">
-                    <hr>
+                <div class="col-md-3">
                     <p><strong>Heap</strong></p>
 
                     <ul class="list-group" id="listHeap">                        
-                    </ul>
-                    <hr>
-                </div>  
-
+                    </ul>                    
+                </div>
             </div>
 
-
+            <div class="row">
+                <div class="col-md-12">
+                    <p><strong>Console output</strong></p>
+                    <textarea id="txtConsole" rows="10" cols="100" class="form-control"></textarea>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-md-12">
@@ -200,7 +189,24 @@
                 </div>            
             </div>
             
+
+            <div class="row">
+                <div class="col-md-6">
+                    <hr>
+                    <p><strong>AST</strong></p>
+                    <textarea id="txtResult" rows="10" cols="100" class="form-control"></textarea>
+                    <hr>
+                </div>            
+
+                <div class="col-md-6">
+                    <hr>
+                    
+                    <hr>
+                </div>  
+
+            </div>
+            
         </div>
     
-    </bod>
+    </body>
 </html>
