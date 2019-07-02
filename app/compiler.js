@@ -2,16 +2,16 @@ function compile(ast, onAddSymbolSuccess, onAddSymbolError){
     //will contain errors generated while compiling
     let errs = [];
     //symbols table
-    let ts = new SymbolsTable();
+    let ts = new SymbolsTable(onAddSymbolSuccess, function(symbol){        
+        errs.push({error: 'Identificador ya declarado', line: symbol.line, column: symbol.column, id: symbol.id});
+    });
 
     //assign ids to nodes
     _node_id = 0;
     addNodeIDs(ast);       
 
     //fill symbols table
-    fillSymbolsTable(ast, "global", ts, errs, onAddSymbolSuccess, function(symbol){        
-        errs.push({error: 'Identificador ya declarado', line: symbol.line, column: symbol.column, id: symbol.id});
-    });
+    fillSymbolsTable(ast, "global", ts, errs);
 
     return {ts: ts, errs: errs};
 }
@@ -29,11 +29,11 @@ function addNodeIDs(ast){
 }
 
 /** ------------ Symbols table definition ---------------- */
-function SymbolsTable(){
+function SymbolsTable(onAddSymbolSuccess, onAddSymbolError){
     
     this.symbols = [];
 
-    this.add = function (newSymbol, checkExistence, onSuccess, onError){
+    this.add = function (newSymbol, checkExistence){
         
         let addSymbol = true;
 
@@ -51,8 +51,8 @@ function SymbolsTable(){
                     addSymbol = false;
                 }                
 
-                if (!addSymbol && onError)
-                    onError(newSymbol);
+                if (!addSymbol && onAddSymbolError)
+                    onAddSymbolError(newSymbol);
             }
         }
         
@@ -64,8 +64,8 @@ function SymbolsTable(){
                 newSymbol.rol = 'main';
 
             this.symbols.push(newSymbol);
-            if (onSuccess)
-                onSuccess(newSymbol);
+            if (onAddSymbolSuccess)
+                onAddSymbolSuccess(newSymbol);
         }
 
     };
@@ -105,8 +105,7 @@ function SymbolsTable(){
         let symbolFound = null;
         
         this.symbols.forEach(function(symbol){
-            if ( symbolFound == null
-                        && symbol.id == symbolId
+            if (symbol.id == symbolId
                         && symbol.type == type
                         && context.indexOf(symbol.context) == 0)
             {
@@ -119,7 +118,7 @@ function SymbolsTable(){
 }
 
 
-function fillSymbolsTable(ast, context, ts, errs, onAddSymbolSuccess, onAddSymbolError){
+function fillSymbolsTable(ast, context, ts, errs){
     var symbol, id;
     
     switch (ast.type){
@@ -129,7 +128,7 @@ function fillSymbolsTable(ast, context, ts, errs, onAddSymbolSuccess, onAddSymbo
                 return;    
 
             ast.children.forEach(function(stmnt, i){
-                fillSymbolsTable(stmnt, context, ts, errs, onAddSymbolSuccess, onAddSymbolError);
+                fillSymbolsTable(stmnt, context, ts, errs);
             });  
             break;
 
@@ -137,7 +136,7 @@ function fillSymbolsTable(ast, context, ts, errs, onAddSymbolSuccess, onAddSymbo
             if (!ast.children)
                 return;              
             ast.children.forEach(function(sent, i){                
-                fillSymbolsTable(sent, context, ts, errs, onAddSymbolSuccess, onAddSymbolError);
+                fillSymbolsTable(sent, context, ts, errs);
             });  
             break;
         
@@ -157,7 +156,7 @@ function fillSymbolsTable(ast, context, ts, errs, onAddSymbolSuccess, onAddSymbo
                     line : dcl.line,
                     column : dcl.column,
                 };                
-                ts.add(symbol, true, onAddSymbolSuccess, onAddSymbolError);
+                ts.add(symbol, true);
             }, ast);
             break;
 
@@ -179,7 +178,7 @@ function fillSymbolsTable(ast, context, ts, errs, onAddSymbolSuccess, onAddSymbo
                 symbol.paramTypes = '';              
             }
             
-            ts.add(symbol, true, onAddSymbolSuccess, onAddSymbolError);
+            ts.add(symbol, true);
             
             let metodoContext = context + '_' + ast.nid + '_' + symbol.id;
             
@@ -194,10 +193,10 @@ function fillSymbolsTable(ast, context, ts, errs, onAddSymbolSuccess, onAddSymbo
                     symbol.bodyContext = metodoContext;
                 }     
                                        
-                fillSymbolsTable(ast.params, metodoContext, ts, errs, onAddSymbolSuccess, onAddSymbolError);                
+                fillSymbolsTable(ast.params, metodoContext, ts, errs);                
             }
             
-            fillSymbolsTable(ast.body, metodoContext, ts, errs, onAddSymbolSuccess, onAddSymbolError);
+            fillSymbolsTable(ast.body, metodoContext, ts, errs);
             
             break;
 
@@ -213,7 +212,7 @@ function fillSymbolsTable(ast, context, ts, errs, onAddSymbolSuccess, onAddSymbo
                     line : param.line,
                     column : param.column,
                 };                
-                ts.add(symbol, true, onAddSymbolSuccess, onAddSymbolError);
+                ts.add(symbol, true);
             }, ast);
             break;
 
@@ -225,14 +224,14 @@ function fillSymbolsTable(ast, context, ts, errs, onAddSymbolSuccess, onAddSymbo
         case 'if':                
                 if (ast.children){
                     ast.children.forEach(function(child, i){                
-                        fillSymbolsTable(child, context + "_" + ast.type + ast.nid, ts, errs, onAddSymbolSuccess, onAddSymbolError);                                                                                
+                        fillSymbolsTable(child, context + "_" + ast.type + ast.nid, ts, errs);                                                                                
                     }, ast);
                 } 
                 break;
         default:
             if (ast.children){
                 ast.children.forEach(function(child, i){                
-                    fillSymbolsTable(child, context, ts, errs, onAddSymbolSuccess, onAddSymbolError);                                        
+                    fillSymbolsTable(child, context, ts, errs);                                        
                 }, ast);
             }            
     }
