@@ -117,7 +117,7 @@ function SymbolsTable(onAddSymbolSuccess, onAddSymbolError){
 
 }
 
-
+/** ------------- Fill symbols table ---------------------*/
 function fillSymbolsTable(ast, context, ts, errs){
     var symbol, id;
     
@@ -234,5 +234,98 @@ function fillSymbolsTable(ast, context, ts, errs){
                     fillSymbolsTable(child, context, ts, errs);                                        
                 }, ast);
             }            
+    }
+}
+
+
+/** ------------- Semanthic analisys --------------------- */
+function semanticAnalisys(ast, context, ts, errs){
+    let type = ast.type;
+    let symbol;
+
+    switch(type){
+        case 'stmnts':
+            if (!ast.children)
+                return;    
+
+            ast.children.forEach(function(stmnt, i){
+                semanticAnalisys(stmnt, context, ts, errs);
+            });  
+            break;
+
+        case 'sents': 
+            if (!ast.children)
+                return;              
+            ast.children.forEach(function(sent, i){                
+                semanticAnalisys(sent, context, ts, errs);
+            });  
+            break;
+
+        case 'dcl':            
+            ast.children.forEach(function(dcl){
+                if (dcl.type == "="){
+                    let id = dcl.children[0].val;
+                    symbol = ts.find(id, 'var', context);
+
+                    if (!symbol){
+                        //identifier not declared
+                        errs.push({type:'semantic', 'error': 'Identifier not declared', text: dcl.children[0].id, line: dcl.children[0].line, column: dcl.children[0].column});                        
+                    }else{
+
+                    }
+                }               
+            });
+            break;
+
+        default:
+            break;
+    }
+}
+
+
+function getDataType(ast, context, ts, errs){
+    let type1, type2;
+
+    switch(ast.type){
+        case 'intLit':
+            return 'int';
+        case 'stringLit':
+            return 'string';
+        case 'boolLit':
+            return 'bool';
+        case 'floatLit':            
+            return 'float';
+        
+        case 'mas':
+        case 'menos':
+        case 'por':
+            type1 = getDataType(ast.children[0], context, ts, errs);
+            type2 = getDataType(ast.children[1], context, ts, errs);
+            if (type1 == 'int' && type2 == 'int')
+                return 'int';
+                if (type1 == 'float' || type2 == 'float')
+                return 'float';
+        case 'entre':
+            return 'float';
+
+        case 'mod':
+                return 'int';
+
+        case 'mayor':
+        case 'menor':
+        case 'mayorI':
+        case 'menorI':
+        case 'igual':
+        case 'noIgual':
+        case 'and':
+        case 'or':
+        case 'not':
+            return 'bool';
+
+        case 'id':            
+            symbol = ts.find(ast.val, 'var', context);
+            if (symbol)
+                return symbol.data_type;
+            return null;
     }
 }
